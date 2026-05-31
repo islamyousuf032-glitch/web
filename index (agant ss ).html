@@ -1,0 +1,3567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>YOUSUF UNBOUND — THE EMPIRE HAS NO LIMITS</title>
+<!-- ============ GOOGLE FONTS ============ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel+Decorative:wght@400;700;900&family=IM+Fell+English+SC&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+/* ====== CSS CUSTOM PROPERTIES ====== */
+:root {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #050508;
+  --accent-gold: #c9a84c;
+  --accent-gold-rgb: 201,168,76;
+  --accent-red: #8b0000;
+  --accent-red-rgb: 139,0,0;
+  --accent-silver: #a8a9ad;
+  --glow-color: #c9a84c;
+  --text-primary: #f0f0f0;
+  --text-secondary: #888888;
+  --highlight: #ffffff;
+  --font-heading: 'Bebas Neue', sans-serif;
+  --font-subheading: 'Cinzel Decorative', serif;
+  --font-body: 'Rajdhani', sans-serif;
+  --font-accent: 'IM Fell English SC', serif;
+  --nav-height: 64px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* ====== GLOBAL RESET & BASE ====== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  font-family:var(--font-body);
+  background:var(--bg-primary);
+  color:var(--text-primary);
+  overflow-x:hidden;
+  cursor:none;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  -webkit-tap-highlight-color:transparent;
+}
+a{text-decoration:none;color:inherit}
+button{background:none;border:none;cursor:none;font-family:inherit;color:inherit}
+ul,ol{list-style:none}
+img{max-width:100%;display:block}
+
+/* ====== CUSTOM SCROLLBAR ====== */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:var(--accent-gold);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#d4b35d}
+
+/* ====== NOIR VIGNETTE ====== */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:10;
+  pointer-events:none;
+  background:radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.7) 100%);
+}
+
+/* ====== BREATHING BACKGROUND ====== */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  animation:breathe 8s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes breathe{
+  0%,100%{background:var(--bg-primary)}
+  50%{background:var(--bg-tertiary)}
+}
+
+/* ====== CINEMATIC LETTERBOX ====== */
+.letterbox-top,.letterbox-bottom{
+  position:fixed;
+  left:0;right:0;
+  height:5vh;
+  background:#000;
+  z-index:10001;
+  pointer-events:none;
+  transition:transform 1s cubic-bezier(0.4,0,0.2,1);
+}
+.letterbox-top{top:0;transform-origin:top}
+.letterbox-bottom{bottom:0;transform-origin:bottom}
+.letterbox-top.retract{transform:scaleY(0)}
+.letterbox-bottom.retract{transform:scaleY(0)}
+
+/* ====== SCROLL PROGRESS INDICATOR ====== */
+#scroll-progress{
+  position:fixed;
+  right:0;top:0;
+  width:2px;
+  height:0%;
+  background:var(--accent-gold);
+  z-index:10000;
+  pointer-events:none;
+  transition:height 0.1s linear;
+}
+
+/* ====== LOADING PROGRESS BAR ====== */
+#loading-bar{
+  position:fixed;
+  top:0;left:0;
+  height:2px;
+  background:var(--accent-gold);
+  z-index:10002;
+  width:0%;
+  transition:width 0.3s ease;
+}
+
+/* ====== PRELOADER ====== */
+#preloader{
+  position:fixed;
+  inset:0;
+  z-index:100000;
+  background:#000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transition:opacity 0.6s ease, visibility 0.6s ease;
+}
+#preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#preloader .seal{
+  width:80px;height:80px;
+  animation:sealSpin 2s linear infinite;
+}
+#preloader .seal svg{width:100%;height:100%}
+@keyframes sealSpin{to{transform:rotate(360deg)}}
+#preloader .preload-bar{
+  width:200px;height:2px;
+  background:#222;
+  margin-top:30px;
+  border-radius:1px;
+  overflow:hidden;
+}
+#preloader .preload-bar-fill{
+  height:100%;
+  background:var(--accent-gold);
+  width:0%;
+  animation:preloadFill 1.5s ease forwards;
+}
+@keyframes preloadFill{to{width:100%}}
+#preloader .preload-text{
+  color:var(--accent-gold);
+  font-family:var(--font-heading);
+  font-size:14px;
+  letter-spacing:0.3em;
+  margin-top:12px;
+  opacity:0.7;
+}
+
+/* ====== INTRO OVERLAY ====== */
+#intro-overlay{
+  position:fixed;
+  inset:0;
+  z-index:10002;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  transition:opacity 1s ease, visibility 1s ease;
+}
+#intro-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#intro-overlay .scanline{
+  position:absolute;
+  top:-5px;
+  left:0;right:0;
+  height:2px;
+  background:var(--accent-red);
+  opacity:0;
+  box-shadow:0 0 10px var(--accent-red);
+}
+#intro-overlay .scanline.active{
+  animation:scanlineSweep 0.8s ease-in-out forwards;
+}
+@keyframes scanlineSweep{
+  0%{top:-5px;opacity:1}
+  100%{top:105%;opacity:1}
+}
+#intro-logo{
+  font-family:var(--font-heading);
+  font-size:clamp(48px,8vw,96px);
+  color:var(--accent-gold);
+  letter-spacing:0.1em;
+  opacity:0;
+  position:relative;
+}
+#intro-logo.visible{opacity:1}
+#intro-logo .char{
+  display:inline-block;
+  transition:color 0.1s;
+}
+#intro-tagline{
+  font-family:var(--font-body);
+  font-size:clamp(14px,2vw,20px);
+  color:var(--text-secondary);
+  letter-spacing:0.5em;
+  opacity:0;
+  margin-top:20px;
+  transition:letter-spacing 1s ease, opacity 0.5s ease;
+}
+#intro-tagline.visible{opacity:1;letter-spacing:0.15em}
+#intro-skip{
+  position:fixed;
+  bottom:30px;right:30px;
+  z-index:10003;
+  color:var(--text-secondary);
+  font-family:var(--font-body);
+  font-size:12px;
+  letter-spacing:0.2em;
+  padding:8px 16px;
+  border:1px solid rgba(255,255,255,0.2);
+  opacity:0;
+  transition:opacity 0.5s ease, color 0.3s ease;
+}
+#intro-skip.visible{opacity:1}
+#intro-skip:hover{color:var(--accent-gold);border-color:var(--accent-gold)}
+
+/* ====== FILM GRAIN CANVAS ====== */
+#grain-canvas{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  pointer-events:none;
+  opacity:0.04;
+}
+
+/* ====== CUSTOM CURSOR ====== */
+#cursor-dot{
+  position:fixed;
+  width:8px;height:8px;
+  background:var(--accent-gold);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:99999;
+  transform:translate(-50%,-50%);
+  transition:width 0.2s, height 0.2s, background 0.2s;
+}
+#cursor-trail{
+  position:fixed;
+  width:32px;height:32px;
+  border:1px solid var(--accent-gold);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:99998;
+  transform:translate(-50%,-50%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:width 0.3s, height 0.3s, border-color 0.3s;
+}
+#cursor-trail .enter-text{
+  font-family:var(--font-heading);
+  font-size:8px;
+  color:transparent;
+  transition:color 0.3s;
+  letter-spacing:0.1em;
+}
+#cursor-trail.hovering{cursor:none}
+#cursor-trail.hovering .enter-text{color:var(--accent-red)}
+#cursor-trail.text-cursor{
+  width:2px;height:24px;
+  border-radius:0;
+  border:none;
+  background:var(--accent-gold);
+}
+#cursor-dot.hidden,#cursor-trail.hidden{display:none}
+
+/* Click burst */
+.cursor-burst{
+  position:fixed;
+  pointer-events:none;
+  z-index:99997;
+  border:1px solid var(--accent-gold);
+  border-radius:50%;
+  animation:burstOut 0.2s ease-out forwards;
+}
+@keyframes burstOut{
+  0%{width:32px;height:32px;opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{width:80px;height:80px;opacity:0;transform:translate(-50%,-50%) scale(1)}
+}
+
+/* ====== TOUCH RIPPLE (MOBILE) ====== */
+.touch-ripple{
+  position:fixed;
+  pointer-events:none;
+  z-index:99997;
+  width:0;height:0;
+  border-radius:50%;
+  background:rgba(var(--accent-gold-rgb),0.4);
+  transform:translate(-50%,-50%);
+  animation:rippleOut 0.4s ease-out forwards;
+}
+@keyframes rippleOut{
+  0%{width:0;height:0;opacity:1}
+  100%{width:60px;height:60px;opacity:0}
+}
+
+/* ====== CURSOR TRAIL PARTICLES ====== */
+.cursor-particle{
+  position:fixed;
+  pointer-events:none;
+  z-index:99996;
+  width:3px;height:3px;
+  background:var(--accent-gold);
+  border-radius:50%;
+  animation:particleFall 0.8s ease-in forwards;
+}
+@keyframes particleFall{
+  0%{opacity:1;transform:translateY(0)}
+  100%{opacity:0;transform:translateY(30px)}
+}
+
+/* ====== TOP NAVIGATION BAR ====== */
+#top-nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  height:var(--nav-height);
+  z-index:1000;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(var(--accent-gold-rgb),0.2);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  padding-top:var(--safe-top);
+}
+#top-nav .nav-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+#top-nav .logo-icon{
+  width:36px;height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  color:var(--accent-gold);
+  animation:logoPulse 3s ease-in-out infinite;
+}
+@keyframes logoPulse{
+  0%,100%{filter:drop-shadow(0 0 4px rgba(var(--accent-gold-rgb),0.3))}
+  50%{filter:drop-shadow(0 0 12px rgba(var(--accent-gold-rgb),0.8))}
+}
+#top-nav .logo-text{
+  font-family:var(--font-heading);
+  font-size:20px;
+  letter-spacing:0.15em;
+  color:var(--accent-gold);
+}
+#top-nav .nav-controls{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.nav-pill{
+  padding:8px 14px;
+  border:1px solid rgba(var(--accent-gold-rgb),0.3);
+  border-radius:20px;
+  font-family:var(--font-body);
+  font-size:11px;
+  letter-spacing:0.1em;
+  color:var(--text-secondary);
+  display:flex;
+  align-items:center;
+  gap:6px;
+  transition:all 0.3s ease;
+  cursor:none;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.nav-pill:hover{border-color:var(--accent-gold);color:var(--accent-gold)}
+.nav-pill .eq-bars{display:flex;align-items:flex-end;gap:2px;height:12px}
+.nav-pill .eq-bars span{
+  width:2px;
+  background:var(--text-secondary);
+  border-radius:1px;
+  transition:background 0.3s;
+}
+.nav-pill:hover .eq-bars span{background:var(--accent-gold)}
+.nav-pill .eq-bars.playing span{animation:eqAnim 0.6s ease-in-out infinite alternate}
+.nav-pill .eq-bars.playing span:nth-child(2){animation-delay:0.15s}
+.nav-pill .eq-bars.playing span:nth-child(3){animation-delay:0.3s}
+@keyframes eqAnim{0%{height:4px}100%{height:12px}}
+
+/* Hamburger */
+#hamburger{
+  width:36px;height:36px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  z-index:2000;
+  position:relative;
+  padding:6px;
+}
+#hamburger span{
+  display:block;
+  width:26px;
+  height:2px;
+  background:var(--accent-gold);
+  border-radius:1px;
+  transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+  will-change:transform;
+}
+#hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+#hamburger.active span:nth-child(2){opacity:0;transform:scaleX(0)}
+#hamburger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ====== FULL SCREEN NAV DRAWER ====== */
+#nav-drawer{
+  position:fixed;
+  inset:0;
+  z-index:1500;
+  background:rgba(0,0,0,0.97);
+  transform:translateX(100%);
+  transition:transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow-y:auto;
+}
+#nav-drawer.open{transform:translateX(0)}
+#nav-drawer .drawer-bg{
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 2px,
+    rgba(255,255,255,0.008) 2px,
+    rgba(255,255,255,0.008) 4px
+  );
+  pointer-events:none;
+}
+#nav-drawer .drawer-items{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:40px;
+}
+#nav-drawer .drawer-item{
+  font-family:var(--font-heading);
+  font-size:clamp(28px,5vw,48px);
+  color:var(--text-secondary);
+  letter-spacing:0.05em;
+  padding:8px 16px;
+  position:relative;
+  transition:all 0.4s ease;
+  will-change:transform;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+#nav-drawer .drawer-item .item-num{
+  font-size:clamp(10px,1.5vw,14px);
+  color:var(--accent-gold);
+  font-family:var(--font-body);
+  opacity:0.6;
+  min-width:40px;
+}
+#nav-drawer .drawer-item:hover{
+  color:var(--highlight);
+  transform:translateX(20px);
+}
+#nav-drawer .drawer-item::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:50%;
+  width:3px;
+  height:0%;
+  background:var(--accent-red);
+  transform:translateY(-50%);
+  transition:height 0.3s ease;
+}
+#nav-drawer .drawer-item:hover::before{height:60%}
+#nav-drawer .drawer-item::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:16px;
+  width:0%;
+  height:1px;
+  background:var(--accent-gold);
+  transition:width 0.4s ease;
+}
+#nav-drawer .drawer-item:hover::after{width:80%}
+
+/* ====== PAGE SECTIONS ====== */
+.page-section{
+  display:none;
+  min-height:100vh;
+  opacity:0;
+  transition:opacity 0.4s ease, transform 0.4s ease;
+  transform:translateY(-20px);
+}
+.page-section.active{
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
+#homepage{display:block;opacity:1;transform:none}
+#homepage.hidden-page{display:none}
+
+/* ====== HOMEPAGE HERO ====== */
+#hero-section{
+  position:relative;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+#hero-canvas{
+  position:absolute;
+  inset:0;
+  z-index:0;
+}
+.hero-content{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.hero-title{
+  font-family:var(--font-heading);
+  font-size:clamp(56px,12vw,140px);
+  color:transparent;
+  -webkit-text-stroke:1px var(--accent-gold);
+  letter-spacing:0.05em;
+  line-height:1;
+  transition:color 0.5s ease, -webkit-text-stroke 0.5s ease;
+  position:relative;
+}
+.hero-title:hover{
+  color:var(--accent-gold);
+  -webkit-text-stroke:1px transparent;
+  text-shadow:0 0 40px rgba(var(--accent-gold-rgb),0.6);
+}
+
+/* Glitch effect */
+.glitch-text{position:relative}
+.glitch-text::before,
+.glitch-text::after{
+  content:attr(data-text);
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  opacity:0;
+  pointer-events:none;
+}
+.glitch-text.glitching::before{
+  opacity:0.8;
+  color:#ff0000;
+  clip-path:polygon(0 20%, 100% 20%, 100% 25%, 0 25%);
+  animation:glitchClip1 0.4s steps(2) infinite;
+}
+.glitch-text.glitching::after{
+  opacity:0.8;
+  color:#00ffff;
+  clip-path:polygon(0 60%, 100% 60%, 100% 65%, 0 65%);
+  animation:glitchClip2 0.4s steps(2) infinite;
+}
+@keyframes glitchClip1{
+  0%{clip-path:polygon(0 20%,100% 20%,100% 25%,0 25%);transform:translate(0)}
+  50%{clip-path:polygon(0 70%,100% 70%,100% 73%,0 73%);transform:translate(-4px)}
+  100%{clip-path:polygon(0 40%,100% 40%,100% 45%,0 45%);transform:translate(0)}
+}
+@keyframes glitchClip2{
+  0%{clip-path:polygon(0 60%,100% 60%,100% 65%,0 65%);transform:translate(0)}
+  50%{clip-path:polygon(0 10%,100% 10%,100% 15%,0 15%);transform:translate(4px)}
+  100%{clip-path:polygon(0 80%,100% 80%,100% 85%,0 85%);transform:translate(0)}
+}
+
+.hero-tagline{
+  font-family:var(--font-body);
+  font-size:clamp(14px,2vw,20px);
+  color:var(--text-secondary);
+  letter-spacing:0.3em;
+  margin-top:16px;
+  height:24px;
+}
+.hero-buttons{
+  display:flex;
+  gap:16px;
+  margin-top:32px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.btn{
+  padding:14px 32px;
+  font-family:var(--font-body);
+  font-size:13px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+  position:relative;
+  will-change:transform;
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.btn-gold{
+  background:var(--accent-gold);
+  color:#000;
+  font-weight:600;
+}
+.btn-gold:hover{background:#000;color:var(--accent-gold);box-shadow:0 0 30px rgba(var(--accent-gold-rgb),0.4)}
+.btn-outline-red{
+  border:1px solid var(--accent-red);
+  color:var(--accent-red);
+}
+.btn-outline-red:hover{background:var(--accent-red);color:#fff;box-shadow:0 0 30px rgba(var(--accent-red-rgb),0.4)}
+.btn-outline-gold{
+  border:1px solid var(--accent-gold);
+  color:var(--accent-gold);
+}
+.btn-outline-gold:hover{background:var(--accent-gold);color:#000}
+
+/* Scroll indicator */
+.scroll-indicator{
+  position:absolute;
+  bottom:30px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  z-index:1;
+}
+.scroll-indicator .arrow{
+  width:20px;height:20px;
+  border-right:1px solid var(--accent-gold);
+  border-bottom:1px solid var(--accent-gold);
+  transform:rotate(45deg);
+  animation:bounceArrow 2s ease-in-out infinite;
+}
+@keyframes bounceArrow{
+  0%,100%{transform:rotate(45deg) translateY(0)}
+  50%{transform:rotate(45deg) translateY(10px)}
+}
+.scroll-indicator span{
+  font-family:var(--font-body);
+  font-size:9px;
+  letter-spacing:0.3em;
+  color:var(--text-secondary);
+  text-transform:uppercase;
+}
+
+/* ====== MARQUEE ====== */
+.marquee-section{
+  width:100%;
+  overflow:hidden;
+  background:#000;
+  border-top:1px solid rgba(var(--accent-gold-rgb),0.15);
+  border-bottom:1px solid rgba(var(--accent-gold-rgb),0.15);
+}
+.marquee-row{
+  display:flex;
+  white-space:nowrap;
+  font-family:var(--font-heading);
+  font-size:16px;
+  letter-spacing:0.1em;
+  color:var(--accent-gold);
+  padding:12px 0;
+}
+.marquee-row.forward{animation:marqueeL 30s linear infinite}
+.marquee-row.reverse{animation:marqueeR 30s linear infinite;color:var(--text-secondary)}
+@keyframes marqueeL{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes marqueeR{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+.marquee-row span{margin:0 16px}
+.marquee-sep{color:var(--accent-red);margin:0 4px}
+
+/* ====== SECTION TITLES ====== */
+.section-title{
+  font-family:var(--font-heading);
+  font-size:clamp(32px,5vw,56px);
+  letter-spacing:0.05em;
+  color:var(--highlight);
+  position:relative;
+  padding-left:20px;
+}
+.section-title::before{
+  content:'';
+  position:absolute;
+  left:0;top:50%;
+  width:2px;
+  height:70%;
+  background:var(--accent-red);
+  transform:translateY(-50%);
+}
+.section-subtitle{
+  font-family:var(--font-subheading);
+  font-size:clamp(12px,1.5vw,16px);
+  color:var(--accent-gold);
+  letter-spacing:0.2em;
+  margin-top:8px;
+}
+
+/* Gold shimmer */
+.gold-shimmer{
+  background:linear-gradient(90deg, var(--accent-gold) 0%, #fff 50%, var(--accent-gold) 100%);
+  background-size:200% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:shimmerAnim 3s ease-in-out infinite;
+}
+@keyframes shimmerAnim{
+  0%,100%{background-position:-200% 0}
+  50%{background-position:200% 0}
+}
+
+/* ====== FEATURED CARDS GRID ====== */
+.featured-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  padding:60px 5%;
+  max-width:1400px;
+  margin:0 auto;
+}
+@media(max-width:1024px){.featured-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.featured-grid{grid-template-columns:1fr}}
+
+.featured-card{
+  position:relative;
+  border-radius:8px;
+  overflow:hidden;
+  height:260px;
+  background:linear-gradient(135deg, #0a0a10 0%, #1a1020 50%, #0a0a0a 100%);
+  transition:all 0.5s cubic-bezier(0.4,0,0.2,1);
+  will-change:transform;
+  contain:layout style paint;
+  border:1px solid transparent;
+}
+.featured-card::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:50%;
+  background:linear-gradient(transparent, rgba(0,0,0,0.9));
+  pointer-events:none;
+}
+.featured-card:hover{
+  transform:scale(1.05);
+  border-color:var(--accent-gold);
+  box-shadow:0 0 30px rgba(var(--accent-gold-rgb),0.4);
+  z-index:2;
+}
+.featured-card .card-badge{
+  position:absolute;
+  top:12px;left:12px;
+  z-index:1;
+  background:var(--accent-gold);
+  color:#000;
+  font-family:var(--font-body);
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.15em;
+  padding:4px 10px;
+  border-radius:3px;
+}
+.featured-card .card-info{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  z-index:1;
+  padding:20px;
+  transform:translateY(10px);
+  transition:transform 0.4s ease;
+}
+.featured-card:hover .card-info{transform:translateY(0)}
+.featured-card .card-title{
+  font-family:var(--font-heading);
+  font-size:22px;
+  letter-spacing:0.05em;
+  color:var(--highlight);
+}
+.featured-card .card-desc{
+  font-family:var(--font-body);
+  font-size:12px;
+  color:var(--text-secondary);
+  margin-top:4px;
+  opacity:0;
+  transition:opacity 0.4s ease;
+}
+.featured-card:hover .card-desc{opacity:1}
+
+/* ====== HORIZONTAL SCROLL ROW ====== */
+.hscroll-container{
+  position:relative;
+  padding:40px 5%;
+  max-width:100vw;
+}
+.hscroll-row{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding-bottom:8px;
+}
+.hscroll-row::-webkit-scrollbar{display:none}
+.hscroll-card{
+  flex:0 0 220px;
+  height:320px;
+  border-radius:6px;
+  background:linear-gradient(180deg, #0d0d18 0%, #1a1025 50%, #050508 100%);
+  position:relative;
+  overflow:hidden;
+  scroll-snap-align:start;
+  transition:all 0.4s ease;
+  will-change:transform;
+  contain:layout style paint;
+}
+.hscroll-card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+.hscroll-card .new-badge{
+  position:absolute;
+  top:10px;right:-30px;
+  background:var(--accent-red);
+  color:#fff;
+  font-family:var(--font-heading);
+  font-size:10px;
+  letter-spacing:0.1em;
+  padding:4px 30px;
+  transform:rotate(45deg);
+  z-index:2;
+}
+.hscroll-card .card-bottom{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  padding:16px;
+  z-index:1;
+}
+.hscroll-card .card-bottom .cat{
+  font-family:var(--font-body);
+  font-size:9px;
+  color:var(--accent-gold);
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+}
+.hscroll-card .card-bottom .title{
+  font-family:var(--font-heading);
+  font-size:18px;
+  color:var(--highlight);
+  letter-spacing:0.03em;
+  margin-top:4px;
+}
+.hscroll-card .card-bottom .date{
+  font-family:var(--font-body);
+  font-size:10px;
+  color:var(--text-secondary);
+  margin-top:4px;
+}
+.hscroll-arrows{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-bottom:12px;
+  padding:0 5%;
+}
+.hscroll-arrow{
+  width:40px;height:40px;
+  border:1px solid rgba(var(--accent-gold-rgb),0.3);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--accent-gold);
+  font-size:16px;
+  transition:all 0.3s ease;
+  min-width:44px;min-height:44px;
+}
+.hscroll-arrow:hover{background:var(--accent-gold);color:#000}
+
+/* ====== EMPIRE STATS ====== */
+.stats-section{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding:60px 5%;
+  max-width:1200px;
+  margin:0 auto;
+  gap:0;
+}
+@media(max-width:768px){.stats-section{grid-template-columns:repeat(2,1fr);gap:20px 0}}
+@media(max-width:480px){.stats-section{grid-template-columns:1fr;gap:20px 0}}
+.stat-col{
+  text-align:center;
+  padding:20px;
+  position:relative;
+}
+.stat-col::after{
+  content:'';
+  position:absolute;
+  right:0;top:20%;height:60%;
+  width:1px;
+  background:rgba(var(--accent-gold-rgb),0.2);
+}
+.stat-col:last-child::after{display:none}
+@media(max-width:768px){.stat-col:nth-child(2)::after{display:none}}
+@media(max-width:480px){.stat-col::after{display:none}}
+.stat-number{
+  font-family:var(--font-heading);
+  font-size:clamp(36px,5vw,60px);
+  color:var(--accent-gold);
+  letter-spacing:0.05em;
+}
+.stat-label{
+  font-family:var(--font-body);
+  font-size:13px;
+  color:var(--text-secondary);
+  letter-spacing:0.1em;
+  margin-top:4px;
+}
+
+/* ====== NEURAL CANVAS SPOTLIGHT ====== */
+.spotlight-section{
+  display:flex;
+  gap:40px;
+  padding:60px 5%;
+  max-width:1200px;
+  margin:0 auto;
+  align-items:center;
+}
+@media(max-width:768px){.spotlight-section{flex-direction:column}}
+.spotlight-art{
+  flex:0 0 60%;
+  aspect-ratio:16/10;
+  background:linear-gradient(135deg, #0a0010 0%, #1a0030 40%, #0d0018 100%);
+  border-radius:8px;
+  position:relative;
+  overflow:hidden;
+}
+.spotlight-art::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse at 30% 40%, rgba(var(--accent-gold-rgb),0.1) 0%, transparent 60%);
+}
+.spotlight-info{
+  flex:1;
+  border-left:2px solid var(--accent-red);
+  padding-left:30px;
+}
+.spotlight-info .spot-title{
+  font-family:var(--font-heading);
+  font-size:clamp(28px,4vw,42px);
+  letter-spacing:0.05em;
+  color:var(--highlight);
+}
+.spotlight-info .spot-desc{
+  font-family:var(--font-body);
+  font-size:14px;
+  color:var(--text-secondary);
+  margin:16px 0;
+  line-height:1.6;
+}
+.spotlight-info .spot-date{
+  font-family:var(--font-body);
+  font-size:11px;
+  color:var(--accent-gold);
+  letter-spacing:0.2em;
+}
+
+/* ====== SONIC PLAYER CARD ====== */
+.player-card{
+  max-width:600px;
+  margin:40px auto;
+  background:rgba(10,10,15,0.8);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(var(--accent-gold-rgb),0.3);
+  border-radius:12px;
+  padding:24px;
+}
+.player-card .track-name{
+  font-family:var(--font-heading);
+  font-size:20px;
+  letter-spacing:0.08em;
+  color:var(--highlight);
+}
+.player-card .track-artist{
+  font-family:var(--font-body);
+  font-size:12px;
+  color:var(--text-secondary);
+  letter-spacing:0.1em;
+  margin-top:4px;
+}
+.player-progress{
+  width:100%;
+  height:2px;
+  background:#222;
+  border-radius:1px;
+  margin:16px 0;
+  position:relative;
+}
+.player-progress-fill{
+  height:100%;
+  background:var(--accent-gold);
+  width:0%;
+  border-radius:1px;
+  transition:width 0.3s linear;
+}
+.player-controls{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  margin:12px 0;
+}
+.player-btn{
+  width:40px;height:40px;
+  border:1px solid rgba(var(--accent-gold-rgb),0.3);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--accent-gold);
+  transition:all 0.3s ease;
+  min-width:44px;min-height:44px;
+}
+.player-btn:hover{background:var(--accent-gold);color:#000}
+.player-btn.play-btn{
+  width:50px;height:50px;
+}
+.player-visualizer{
+  width:100%;
+  height:60px;
+  margin-top:8px;
+}
+#player-canvas{
+  width:100%;
+  height:100%;
+}
+
+/* ====== DARK ARENAS CARDS ====== */
+.arena-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  padding:40px 5%;
+  max-width:1200px;
+  margin:0 auto;
+}
+@media(max-width:768px){.arena-cards{grid-template-columns:1fr;max-width:400px}}
+.arena-card{
+  background:linear-gradient(135deg, #0a0000, #1a0008, #050000);
+  border-radius:8px;
+  padding:30px;
+  text-align:center;
+  border:1px solid rgba(var(--accent-red-rgb),0.2);
+  transition:all 0.5s ease;
+  will-change:transform;
+  contain:layout style paint;
+  position:relative;
+  overflow:hidden;
+}
+.arena-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, rgba(var(--accent-red-rgb),0.05), transparent);
+  opacity:0;
+  transition:opacity 0.5s ease;
+}
+.arena-card:hover::before{opacity:1}
+.arena-card:hover{
+  box-shadow:0 0 40px rgba(var(--accent-red-rgb),0.3);
+  animation:arenaShake 0.5s ease-in-out;
+}
+@keyframes arenaShake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-3px)}
+  75%{transform:translateX(3px)}
+}
+.arena-card .arena-title{
+  font-family:var(--font-heading);
+  font-size:28px;
+  letter-spacing:0.05em;
+  color:var(--highlight);
+  position:relative;
+}
+.arena-card .arena-genre{
+  font-family:var(--font-body);
+  font-size:11px;
+  color:var(--accent-gold);
+  letter-spacing:0.2em;
+  margin:8px 0;
+}
+.arena-card .arena-btn{
+  margin-top:16px;
+  display:inline-block;
+}
+
+/* ====== NEWSLETTER ====== */
+.newsletter-section{
+  padding:80px 5%;
+  text-align:center;
+  background:linear-gradient(180deg, #000 0%, #050508 50%, #000 100%);
+}
+.newsletter-section .nl-title{
+  font-family:var(--font-heading);
+  font-size:clamp(40px,8vw,80px);
+  letter-spacing:0.03em;
+  color:var(--highlight);
+}
+.newsletter-section .nl-subtitle{
+  font-family:var(--font-body);
+  font-size:13px;
+  color:var(--text-secondary);
+  letter-spacing:0.2em;
+  margin:8px 0 24px;
+}
+.newsletter-form{
+  display:flex;
+  gap:10px;
+  max-width:500px;
+  margin:0 auto;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.newsletter-form input{
+  flex:1;
+  min-width:200px;
+  padding:14px 20px;
+  background:transparent;
+  border:1px solid rgba(var(--accent-gold-rgb),0.3);
+  color:var(--text-primary);
+  font-family:var(--font-body);
+  font-size:14px;
+  letter-spacing:0.1em;
+  border-radius:4px;
+  outline:none;
+  transition:border-color 0.3s;
+}
+.newsletter-form input:focus{border-color:var(--accent-gold)}
+.newsletter-form input::placeholder{color:var(--text-secondary);letter-spacing:0.15em;font-size:11px}
+.newsletter-success{
+  display:none;
+  color:var(--accent-gold);
+  font-family:var(--font-heading);
+  font-size:18px;
+  letter-spacing:0.1em;
+  margin-top:16px;
+  animation:fadeInUp 0.5s ease;
+}
+.newsletter-success.show{display:block}
+
+/* ====== FOOTER ====== */
+#site-footer{
+  border-top:1px solid rgba(var(--accent-gold-rgb),0.2);
+  padding:60px 5% 30px;
+  background:linear-gradient(180deg, #050508 0%, #000 100%);
+  position:relative;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:40px;
+  max-width:1200px;
+  margin:0 auto;
+}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr;gap:30px}}
+.footer-logo{
+  font-family:var(--font-heading);
+  font-size:28px;
+  color:var(--accent-gold);
+  letter-spacing:0.1em;
+}
+.footer-tagline{
+  font-family:var(--font-body);
+  font-size:12px;
+  color:var(--text-secondary);
+  letter-spacing:0.1em;
+  margin-top:8px;
+}
+.footer-col h4{
+  font-family:var(--font-heading);
+  font-size:16px;
+  letter-spacing:0.1em;
+  color:var(--accent-gold);
+  margin-bottom:12px;
+}
+.footer-col a{
+  display:block;
+  font-family:var(--font-body);
+  font-size:13px;
+  color:var(--text-secondary);
+  padding:4px 0;
+  transition:color 0.3s;
+}
+.footer-col a:hover{color:var(--accent-gold)}
+.social-icons{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.social-icon{
+  width:36px;height:36px;
+  border:1px solid rgba(var(--accent-gold-rgb),0.3);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  color:var(--text-secondary);
+  transition:all 0.3s ease;
+  min-width:44px;min-height:44px;
+}
+.social-icon:hover{background:var(--accent-gold);color:#000;transform:scale(1.15)}
+.footer-bottom{
+  text-align:center;
+  margin-top:40px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.05);
+  font-family:var(--font-body);
+  font-size:10px;
+  color:var(--text-secondary);
+  letter-spacing:0.15em;
+}
+
+/* ====== SUB-PAGE HERO ====== */
+.subpage-hero{
+  padding:120px 5% 60px;
+  text-align:center;
+  position:relative;
+  min-height:40vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.subpage-hero .page-title{
+  font-family:var(--font-heading);
+  font-size:clamp(36px,6vw,72px);
+  letter-spacing:0.08em;
+  color:var(--highlight);
+}
+.subpage-hero .page-underline{
+  width:100px;
+  height:2px;
+  background:var(--accent-gold);
+  margin:16px auto 0;
+}
+.back-btn{
+  position:fixed;
+  top:calc(var(--nav-height) + 16px + var(--safe-top));
+  left:20px;
+  z-index:900;
+  font-family:var(--font-body);
+  font-size:11px;
+  letter-spacing:0.2em;
+  color:var(--accent-gold);
+  padding:8px 16px;
+  border:1px solid rgba(var(--accent-gold-rgb),0.3);
+  border-radius:20px;
+  transition:all 0.3s ease;
+}
+.back-btn:hover{background:var(--accent-gold);color:#000}
+
+/* ====== PAGE GRIDS ====== */
+.content-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  padding:20px 5% 60px;
+  max-width:1200px;
+  margin:0 auto;
+}
+@media(max-width:1024px){.content-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.content-grid{grid-template-columns:1fr}}
+
+/* For masonry/photos */
+.masonry-grid{
+  columns:4;
+  column-gap:16px;
+  padding:20px 5% 60px;
+  max-width:1400px;
+  margin:0 auto;
+}
+@media(max-width:1200px){.masonry-grid{columns:3}}
+@media(max-width:768px){.masonry-grid{columns:2}}
+.masonry-item{
+  break-inside:avoid;
+  margin-bottom:16px;
+  border-radius:6px;
+  background:linear-gradient(135deg, #0a0a10, #1a1025);
+  overflow:hidden;
+  transition:transform 0.4s ease;
+}
+.masonry-item:hover{transform:scale(1.02)}
+.masonry-item .masonry-img{
+  width:100%;
+  aspect-ratio:auto;
+  min-height:200px;
+  background:linear-gradient(135deg, #100815, #1a0a20);
+}
+.masonry-item .masonry-info{
+  padding:12px;
+}
+.masonry-item .masonry-info .m-title{
+  font-family:var(--font-heading);
+  font-size:16px;
+  letter-spacing:0.03em;
+}
+
+/* Filter tabs */
+.filter-tabs{
+  display:flex;
+  gap:8px;
+  padding:20px 5%;
+  max-width:1200px;
+  margin:0 auto;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.filter-tab{
+  padding:8px 16px;
+  border:1px solid rgba(var(--accent-gold-rgb),0.3);
+  border-radius:20px;
+  font-family:var(--font-body);
+  font-size:11px;
+  letter-spacing:0.1em;
+  color:var(--text-secondary);
+  transition:all 0.3s ease;
+  min-height:36px;
+}
+.filter-tab:hover,.filter-tab.active{
+  background:var(--accent-gold);
+  color:#000;
+  border-color:var(--accent-gold);
+}
+
+/* ====== MUSIC PAGE PLAYER ====== */
+.music-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+  padding:20px 5% 60px;
+  max-width:1200px;
+  margin:0 auto;
+}
+@media(max-width:768px){.music-layout{grid-template-columns:1fr}}
+.track-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.track-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border:1px solid rgba(255,255,255,0.05);
+  border-radius:6px;
+  transition:all 0.3s ease;
+}
+.track-item:hover{border-color:rgba(var(--accent-gold-rgb),0.3);background:rgba(255,255,255,0.02)}
+.track-num{
+  font-family:var(--font-heading);
+  font-size:14px;
+  color:var(--accent-gold);
+  min-width:24px;
+  text-align:right;
+}
+.track-info{flex:1}
+.track-info .t-name{
+  font-family:var(--font-heading);
+  font-size:16px;
+  letter-spacing:0.03em;
+}
+.track-info .t-dur{
+  font-family:var(--font-body);
+  font-size:10px;
+  color:var(--text-secondary);
+}
+
+/* ====== LIGHTBOX ====== */
+#lightbox{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  background:rgba(0,0,0,0.95);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+#lightbox.open{display:flex}
+#lightbox .lb-img{
+  max-width:90vw;
+  max-height:70vh;
+  background:linear-gradient(135deg, #100815, #1a0a20);
+  border-radius:4px;
+  width:600px;
+  aspect-ratio:16/10;
+}
+#lightbox .lb-controls{
+  display:flex;
+  gap:16px;
+  margin-top:16px;
+}
+#lightbox .lb-close{
+  position:absolute;
+  top:20px;right:20px;
+  width:44px;height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--accent-gold);
+  font-size:20px;
+  border:1px solid rgba(var(--accent-gold-rgb),0.3);
+  border-radius:50%;
+}
+
+/* ====== TIMELINE (About Page) ====== */
+.timeline{
+  max-width:700px;
+  margin:40px auto;
+  padding:0 5%;
+  position:relative;
+}
+.timeline::before{
+  content:'';
+  position:absolute;
+  left:20px;top:0;bottom:0;
+  width:1px;
+  background:rgba(var(--accent-gold-rgb),0.2);
+}
+.timeline-item{
+  position:relative;
+  padding-left:50px;
+  margin-bottom:30px;
+}
+.timeline-item::before{
+  content:'';
+  position:absolute;
+  left:14px;top:4px;
+  width:14px;height:14px;
+  border:2px solid var(--accent-gold);
+  border-radius:50%;
+  background:#000;
+}
+.timeline-item .tl-year{
+  font-family:var(--font-heading);
+  font-size:18px;
+  color:var(--accent-gold);
+  letter-spacing:0.1em;
+}
+.timeline-item .tl-text{
+  font-family:var(--font-body);
+  font-size:14px;
+  color:var(--text-secondary);
+  margin-top:4px;
+}
+
+/* ====== COUNTDOWN ====== */
+.countdown{
+  font-family:var(--font-heading);
+  font-size:clamp(24px,3vw,36px);
+  color:var(--accent-gold);
+  letter-spacing:0.05em;
+}
+
+/* ====== CUSTOM CONTEXT MENU ====== */
+#context-menu{
+  position:fixed;
+  z-index:100000;
+  background:rgba(0,0,0,0.95);
+  border:1px solid rgba(var(--accent-gold-rgb),0.4);
+  border-radius:6px;
+  padding:6px 0;
+  min-width:200px;
+  display:none;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+}
+#context-menu.show{display:block}
+#context-menu .ctx-item{
+  padding:10px 20px;
+  font-family:var(--font-body);
+  font-size:12px;
+  color:var(--text-secondary);
+  letter-spacing:0.1em;
+  transition:all 0.2s ease;
+}
+#context-menu .ctx-item:hover{
+  background:rgba(var(--accent-gold-rgb),0.1);
+  color:var(--accent-gold);
+}
+
+/* ====== EASTER EGG OVERLAY ====== */
+#easter-egg{
+  position:fixed;
+  inset:0;
+  z-index:100001;
+  pointer-events:none;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+#easter-egg.active{display:flex}
+#easter-egg .egg-text{
+  font-family:var(--font-heading);
+  font-size:clamp(32px,5vw,64px);
+  color:var(--accent-red);
+  text-shadow:0 0 30px var(--accent-red);
+  animation:easterPulse 0.5s ease-in-out infinite alternate;
+}
+@keyframes easterPulse{
+  0%{opacity:0.7;text-shadow:0 0 20px var(--accent-red)}
+  100%{opacity:1;text-shadow:0 0 60px var(--accent-red)}
+}
+#easter-egg .lightning{
+  position:absolute;
+  top:0;left:50%;
+  width:2px;
+  height:100%;
+  background:var(--accent-red);
+  opacity:0;
+}
+#easter-egg .lightning.active{
+  animation:lightningFlash 0.1s ease-in-out 3;
+}
+@keyframes lightningFlash{
+  0%,100%{opacity:0}
+  50%{opacity:1;box-shadow:0 0 40px var(--accent-red)}
+}
+
+/* ====== SCROLL REVEAL ====== */
+.reveal-element{
+  opacity:0;
+  transform:translateY(40px);
+  transition:opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-element.revealed{opacity:1;transform:translateY(0)}
+.reveal-stagger > *{opacity:0;transform:translateY(30px);transition:opacity 0.5s ease, transform 0.5s ease}
+.reveal-stagger > *.revealed{opacity:1;transform:translateY(0)}
+
+/* ====== MOBILE BOTTOM NAV ====== */
+#mobile-nav{
+  display:none;
+  position:fixed;
+  bottom:0;left:0;right:0;
+  z-index:1000;
+  background:rgba(0,0,0,0.9);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-top:1px solid rgba(var(--accent-gold-rgb),0.2);
+  padding:8px 0;
+  padding-bottom:calc(8px + var(--safe-bottom));
+}
+#mobile-nav .mob-nav-items{
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+#mobile-nav .mob-nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:10px;
+  color:var(--text-secondary);
+  font-family:var(--font-body);
+  letter-spacing:0.05em;
+  transition:color 0.3s;
+  min-width:44px;
+  min-height:44px;
+  justify-content:center;
+}
+#mobile-nav .mob-nav-item .mob-icon{
+  font-size:18px;
+  margin-bottom:2px;
+}
+#mobile-nav .mob-nav-item:active{color:var(--accent-gold)}
+
+/* ====== MUSIC OVERLAY (autoplay fallback) ====== */
+#music-overlay{
+  position:fixed;
+  inset:0;
+  z-index:10001;
+  background:rgba(0,0,0,0.9);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  cursor:none;
+}
+#music-overlay.show{display:flex}
+#music-overlay .mo-text{
+  font-family:var(--font-heading);
+  font-size:clamp(24px,3vw,36px);
+  letter-spacing:0.15em;
+  color:var(--accent-gold);
+  animation:moPulse 1.5s ease-in-out infinite;
+}
+@keyframes moPulse{
+  0%,100%{opacity:0.5}
+  50%{opacity:1}
+}
+#music-overlay .mo-sub{
+  font-family:var(--font-body);
+  font-size:12px;
+  color:var(--text-secondary);
+  letter-spacing:0.2em;
+  margin-top:12px;
+}
+
+/* ====== SECTION NUMBER DECORATION ====== */
+.section-number{
+  position:absolute;
+  font-family:var(--font-heading);
+  font-size:clamp(80px,15vw,200px);
+  color:rgba(var(--accent-gold-rgb),0.03);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ====== GOLD LINE WIPE ====== */
+.line-wipe{
+  position:fixed;
+  left:0;right:0;
+  height:2px;
+  background:var(--accent-gold);
+  z-index:10003;
+  pointer-events:none;
+  transform:scaleX(0);
+  transition:transform 0.1s ease;
+}
+.line-wipe.active{transform:scaleX(1)}
+
+/* ====== TOOLTIP ====== */
+.custom-tooltip{
+  position:fixed;
+  z-index:100001;
+  pointer-events:none;
+  background:rgba(0,0,0,0.9);
+  border:1px solid rgba(var(--accent-gold-rgb),0.5);
+  padding:8px 14px;
+  border-radius:4px;
+  font-family:var(--font-body);
+  font-size:11px;
+  color:var(--accent-gold);
+  letter-spacing:0.1em;
+  opacity:0;
+  transition:opacity 0.2s;
+}
+.custom-tooltip.show{opacity:1}
+
+/* ====== SCANLINE ON CARDS ====== */
+.scanline-overlay{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:0;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.15) 2px,
+    rgba(0,0,0,0.15) 4px
+  );
+  transition:opacity 0.3s;
+  z-index:1;
+}
+.featured-card:hover .scanline-overlay,
+.hscroll-card:hover .scanline-overlay{opacity:1}
+
+/* ====== MISC UTILITY ====== */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.text-center{text-align:center}
+.mt-16{margin-top:16px}
+.mt-24{margin-top:24px}
+.mb-24{margin-bottom:24px}
+.p-5{padding:0 5%}
+
+/* ====== RESPONSIVE ====== */
+@media(max-width:768px){
+  #top-nav{padding:0 12px}
+  #top-nav .logo-text{font-size:14px}
+  #mobile-nav{display:block}
+  #site-footer{padding-bottom:90px}
+  #scroll-progress{display:none}
+}
+@media(min-width:769px){
+  #mobile-nav{display:none !important}
+}
+@media(max-width:480px){
+  .hero-buttons{flex-direction:column;width:90%}
+  .btn{width:100%}
+}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ PRELOADER ============ -->
+<div id="preloader">
+  <div class="seal">
+    <svg viewBox="0 0 100 100">
+      <polygon points="50,5 61,35 95,35 68,55 79,88 50,68 21,88 32,55 5,35 39,35" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+      <text x="50" y="56" text-anchor="middle" fill="#c9a84c" font-family="serif" font-size="22" font-weight="bold">YU</text>
+    </svg>
+  </div>
+  <div class="preload-bar"><div class="preload-bar-fill"></div></div>
+  <div class="preload-text">INITIALIZING EMPIRE</div>
+</div>
+
+<!-- ============ LOADING BAR ============ -->
+<div id="loading-bar"></div>
+
+<!-- ============ FILM GRAIN CANVAS ============ -->
+<canvas id="grain-canvas"></canvas>
+
+<!-- ============ CINEMATIC LETTERBOX ============ -->
+<div class="letterbox-top"></div>
+<div class="letterbox-bottom"></div>
+
+<!-- ============ SCROLL PROGRESS ============ -->
+<div id="scroll-progress"></div>
+
+<!-- ============ LINE WIPE ============ -->
+<div class="line-wipe" style="top:50%"></div>
+
+<!-- ============ INTRO OVERLAY ============ -->
+<div id="intro-overlay">
+  <div class="scanline"></div>
+  <h1 id="intro-logo">YOUSUF UNBOUND</h1>
+  <p id="intro-tagline">THE EMPIRE HAS NO LIMITS</p>
+</div>
+<button id="intro-skip">SKIP ▸</button>
+
+<!-- ============ CUSTOM CURSOR ============ -->
+<div id="cursor-dot"></div>
+<div id="cursor-trail"><span class="enter-text">ENTER</span></div>
+
+<!-- ============ CUSTOM TOOLTIP ============ -->
+<div class="custom-tooltip" id="tooltip"></div>
+
+<!-- ============ CUSTOM CONTEXT MENU ============ -->
+<div id="context-menu">
+  <div class="ctx-item" data-action="home">↵ Return to Home</div>
+  <div class="ctx-item" data-action="fullscreen">⛶ Enter Fullscreen</div>
+  <div class="ctx-item" data-action="music">♫ Toggle Music</div>
+  <div class="ctx-item" data-action="cursor">◎ Toggle Cursor</div>
+</div>
+
+<!-- ============ EASTER EGG OVERLAY ============ -->
+<div id="easter-egg">
+  <div class="lightning"></div>
+  <div class="egg-text">EMPIRE MODE ACTIVATED</div>
+</div>
+
+<!-- ============ MUSIC AUTOPLAY OVERLAY ============ -->
+<div id="music-overlay">
+  <div class="mo-text">CLICK TO ENTER THE EMPIRE</div>
+  <div class="mo-sub">THE SCORE AWAITS</div>
+</div>
+
+<!-- ============ TOP NAVIGATION ============ -->
+<nav id="top-nav">
+  <div class="nav-left">
+    <div class="logo-icon">Y∞</div>
+    <span class="logo-text gold-shimmer">YOUSUF UNBOUND</span>
+  </div>
+  <div class="nav-controls">
+    <button class="nav-pill" id="btn-music" aria-label="Toggle Music">
+      <span class="eq-bars" id="eq-bars"><span></span><span></span><span></span></span>
+      ♫ SCORE
+    </button>
+    <button class="nav-pill" id="btn-cursor" aria-label="Toggle Cursor">◎ CURSOR</button>
+    <button id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ============ FULL SCREEN NAV DRAWER ============ -->
+<div id="nav-drawer">
+  <div class="drawer-bg"></div>
+  <div class="drawer-items">
+    <a href="#" class="drawer-item" data-page="films"><span class="item-num">01 —</span> CINEMATIC VAULT</a>
+    <a href="#" class="drawer-item" data-page="photos"><span class="item-num">02 —</span> VISUAL ARCHIVES</a>
+    <a href="#" class="drawer-item" data-page="music"><span class="item-num">03 —</span> SONIC EMPIRE</a>
+    <a href="#" class="drawer-item" data-page="ai-art"><span class="item-num">04 —</span> NEURAL CANVAS</a>
+    <a href="#" class="drawer-item" data-page="games"><span class="item-num">05 —</span> DARK ARENAS</a>
+    <a href="#" class="drawer-item" data-page="shop"><span class="item-num">06 —</span> THE ARMORY</a>
+    <a href="#" class="drawer-item" data-page="apps"><span class="item-num">07 —</span> COMMAND SYSTEMS</a>
+    <a href="#" class="drawer-item" data-page="about"><span class="item-num">08 —</span> THE ORIGIN</a>
+  </div>
+</div>
+
+<!-- ============ MOBILE BOTTOM NAV ============ -->
+<nav id="mobile-nav">
+  <div class="mob-nav-items">
+    <button class="mob-nav-item" data-page="homepage"><span class="mob-icon">⌂</span>Home</button>
+    <button class="mob-nav-item" data-page="films"><span class="mob-icon">▶</span>Vault</button>
+    <button class="mob-nav-item" data-page="music"><span class="mob-icon">♫</span>Sonic</button>
+    <button class="mob-nav-item" data-page="ai-art"><span class="mob-icon">◇</span>Neural</button>
+    <button class="mob-nav-item" data-page="about"><span class="mob-icon">◎</span>Origin</button>
+  </div>
+</nav>
+
+<!-- ============ HOMEPAGE ============ -->
+<main id="homepage" class="page-section active" data-active="true">
+
+  <!-- SECTION 1: HERO -->
+  <section id="hero-section">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <h1 class="hero-title glitch-text" data-text="YOUSUF UNBOUND" id="hero-logo">YOUSUF UNBOUND</h1>
+      <div class="hero-tagline" id="hero-tagline"></div>
+      <div class="hero-buttons">
+        <button class="btn btn-gold magnetic-btn" data-action="explore">EXPLORE THE EMPIRE</button>
+        <button class="btn btn-outline-red magnetic-btn" data-action="reel">WATCH THE REEL</button>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="arrow"></div>
+      <span>SCROLL TO DESCEND</span>
+    </div>
+  </section>
+
+  <!-- SECTION 2: MARQUEE -->
+  <section class="marquee-section">
+    <div class="marquee-row forward">
+      <span>CINEMATIC VAULT</span><span class="marquee-sep">◆</span>
+      <span>SONIC EMPIRE</span><span class="marquee-sep">◆</span>
+      <span>NEURAL CANVAS</span><span class="marquee-sep">◆</span>
+      <span>DARK ARENAS</span><span class="marquee-sep">◆</span>
+      <span>CINEMATIC VAULT</span><span class="marquee-sep">◆</span>
+      <span>SONIC EMPIRE</span><span class="marquee-sep">◆</span>
+      <span>NEURAL CANVAS</span><span class="marquee-sep">◆</span>
+      <span>DARK ARENAS</span>
+    </div>
+    <div class="marquee-row reverse">
+      <span>VISUAL ARCHIVES</span><span class="marquee-sep">◆</span>
+      <span>THE ARMORY</span><span class="marquee-sep">◆</span>
+      <span>COMMAND SYSTEMS</span><span class="marquee-sep">◆</span>
+      <span>THE ORIGIN</span><span class="marquee-sep">◆</span>
+      <span>VISUAL ARCHIVES</span><span class="marquee-sep">◆</span>
+      <span>THE ARMORY</span><span class="marquee-sep">◆</span>
+      <span>COMMAND SYSTEMS</span><span class="marquee-sep">◆</span>
+      <span>THE ORIGIN</span>
+    </div>
+  </section>
+
+  <!-- SECTION 3: FEATURED CONTENT -->
+  <section style="position:relative;padding:60px 5%;">
+    <span class="section-number" style="top:0;right:5%">01</span>
+    <h2 class="section-title reveal-element">WHAT'S RISING IN THE EMPIRE</h2>
+    <p class="section-subtitle reveal-element">Hand-picked from the vault</p>
+    <div class="featured-grid reveal-stagger" style="margin-top:30px">
+      <div class="featured-card" data-nav="films">
+        <div class="scanline-overlay"></div>
+        <span class="card-badge">CINEMATIC VAULT</span>
+        <div class="card-info"><div class="card-title">The Shadows Within</div><div class="card-desc">Short film — A noir masterpiece</div></div>
+      </div>
+      <div class="featured-card" data-nav="music">
+        <div class="scanline-overlay"></div>
+        <span class="card-badge">SONIC EMPIRE</span>
+        <div class="card-info"><div class="card-title">Midnight Protocol</div><div class="card-desc">Dark ambient track — Vol. 3</div></div>
+      </div>
+      <div class="featured-card" data-nav="ai-art">
+        <div class="scanline-overlay"></div>
+        <span class="card-badge">NEURAL CANVAS</span>
+        <div class="card-info"><div class="card-title">Villain Architecture</div><div class="card-desc">AI artwork series</div></div>
+      </div>
+      <div class="featured-card" data-nav="photos">
+        <div class="scanline-overlay"></div>
+        <span class="card-badge">VISUAL ARCHIVES</span>
+        <div class="card-info"><div class="card-title">Neon Noir Series</div><div class="card-desc">Photo collection</div></div>
+      </div>
+      <div class="featured-card" data-nav="games">
+        <div class="scanline-overlay"></div>
+        <span class="card-badge">DARK ARENAS</span>
+        <div class="card-info"><div class="card-title">Empire Siege</div><div class="card-desc">Game — Coming soon</div></div>
+      </div>
+      <div class="featured-card" data-nav="shop">
+        <div class="scanline-overlay"></div>
+        <span class="card-badge">THE ARMORY</span>
+        <div class="card-info"><div class="card-title">Empire Merch Drop</div><div class="card-desc">New products available</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: NEW ARRIVALS -->
+  <section style="position:relative;padding:60px 0;">
+    <span class="section-number" style="top:0;left:5%">02</span>
+    <div style="padding:0 5%">
+      <h2 class="section-title reveal-element">FRESH FROM THE SHADOWS</h2>
+      <p class="section-subtitle reveal-element">Latest additions to the empire</p>
+    </div>
+    <div class="hscroll-arrows" style="margin-top:16px">
+      <button class="hscroll-arrow" id="hscroll-left" aria-label="Scroll left">◂</button>
+      <button class="hscroll-arrow" id="hscroll-right" aria-label="Scroll right">▸</button>
+    </div>
+    <div class="hscroll-container">
+      <div class="hscroll-row" id="hscroll-row">
+        <div class="hscroll-card"><div class="scanline-overlay"></div><div class="new-badge">NEW</div><div class="card-bottom"><div class="cat">CINEMATIC VAULT</div><div class="title">Dark Horizon</div><div class="date">2026.05.28</div></div></div>
+        <div class="hscroll-card"><div class="scanline-overlay"></div><div class="new-badge">NEW</div><div class="card-bottom"><div class="cat">SONIC EMPIRE</div><div class="title">Abyssal Drift</div><div class="date">2026.05.25</div></div></div>
+        <div class="hscroll-card"><div class="scanline-overlay"></div><div class="new-badge">NEW</div><div class="card-bottom"><div class="cat">NEURAL CANVAS</div><div class="title">Obsidian Throne</div><div class="date">2026.05.22</div></div></div>
+        <div class="hscroll-card"><div class="scanline-overlay"></div><div class="new-badge">NEW</div><div class="card-bottom"><div class="cat">VISUAL ARCHIVES</div><div class="title">Shadow Series</div><div class="date">2026.05.20</div></div></div>
+        <div class="hscroll-card"><div class="scanline-overlay"></div><div class="new-badge">NEW</div><div class="card-bottom"><div class="cat">DARK ARENAS</div><div class="title">Void Runner</div><div class="date">2026.05.18</div></div></div>
+        <div class="hscroll-card"><div class="scanline-overlay"></div><div class="new-badge">NEW</div><div class="card-bottom"><div class="cat">THE ARMORY</div><div class="title">Gold Edition</div><div class="date">2026.05.15</div></div></div>
+        <div class="hscroll-card"><div class="scanline-overlay"></div><div class="new-badge">NEW</div><div class="card-bottom"><div class="cat">COMMAND SYSTEMS</div><div class="title">Empire OS</div><div class="date">2026.05.12</div></div></div>
+        <div class="hscroll-card"><div class="scanline-overlay"></div><div class="new-badge">NEW</div><div class="card-bottom"><div class="cat">THE ORIGIN</div><div class="title">Chronicles</div><div class="date">2026.05.10</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: EMPIRE STATS -->
+  <section style="position:relative;padding:60px 5%;border-top:1px solid rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.03)">
+    <span class="section-number" style="top:0;right:5%">03</span>
+    <div class="stats-section reveal-element">
+      <div class="stat-col"><div class="stat-number" data-count="12">0</div><div class="stat-label">FILMS+</div></div>
+      <div class="stat-col"><div class="stat-number" data-count="2400">0</div><div class="stat-label">TRACKS</div></div>
+      <div class="stat-col"><div class="stat-number" data-count="890">0</div><div class="stat-label">AI ARTWORKS</div></div>
+      <div class="stat-col"><div class="stat-number" data-count="6">0</div><div class="stat-label">LIVE GAMES</div></div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: NEURAL CANVAS SPOTLIGHT -->
+  <section style="position:relative;padding:60px 0;">
+    <span class="section-number" style="top:0;left:5%">04</span>
+    <div style="padding:0 5%">
+      <h2 class="section-title reveal-element">AI VISION OF THE WEEK</h2>
+    </div>
+    <div class="spotlight-section reveal-element">
+      <div class="spotlight-art"></div>
+      <div class="spotlight-info">
+        <h3 class="spot-title">Villain Architecture — Vol. VII</h3>
+        <p class="spot-desc">An AI-generated exploration of brutalist empire structures bathed in gold and shadow. Each piece visualizes the architecture of power.</p>
+        <div class="spot-date">Generated: 2026.05.30 — Neural Canvas</div>
+        <button class="btn btn-outline-gold magnetic-btn mt-16" data-nav="ai-art">VIEW IN GALLERY</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7: SONIC EMPIRE PLAYER -->
+  <section style="position:relative;padding:60px 5%;">
+    <span class="section-number" style="top:0;right:5%">05</span>
+    <h2 class="section-title reveal-element" style="text-align:center;padding-left:0">NOW PLAYING FROM THE VAULT</h2>
+    <div class="player-card reveal-element">
+      <div class="track-name">Midnight Protocol — Vol. 3</div>
+      <div class="track-artist">SONIC EMPIRE • DARK AMBIENT</div>
+      <div class="player-progress"><div class="player-progress-fill" id="player-progress-fill"></div></div>
+      <div class="player-controls">
+        <button class="player-btn" id="player-prev" aria-label="Previous">⏮</button>
+        <button class="player-btn play-btn" id="player-play" aria-label="Play/Pause">▶</button>
+        <button class="player-btn" id="player-next" aria-label="Next">⏭</button>
+      </div>
+      <div class="player-visualizer"><canvas id="player-canvas"></canvas></div>
+      <div style="text-align:center;margin-top:12px">
+        <button class="btn btn-outline-gold magnetic-btn" data-nav="music">EXPLORE SONIC EMPIRE</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 8: DARK ARENAS PREVIEW -->
+  <section style="position:relative;padding:60px 0;border-top:1px solid rgba(255,255,255,0.03)">
+    <span class="section-number" style="top:0;left:5%">06</span>
+    <div style="padding:0 5%">
+      <h2 class="section-title reveal-element">ENTER THE ARENA</h2>
+    </div>
+    <div class="arena-cards reveal-stagger">
+      <div class="arena-card">
+        <div class="arena-title">EMPIRE SIEGE</div>
+        <div class="arena-genre">STRATEGY • MULTIPLAYER</div>
+        <div style="color:var(--accent-gold);font-size:11px;letter-spacing:0.1em">★ 4.8 / 2.4K Players</div>
+        <button class="btn btn-outline-red arena-btn magnetic-btn">PLAY NOW</button>
+      </div>
+      <div class="arena-card">
+        <div class="arena-title">VOID RUNNER</div>
+        <div class="arena-genre">ACTION • ENDLESS RUNNER</div>
+        <div style="color:var(--accent-gold);font-size:11px;letter-spacing:0.1em">★ 4.6 / 1.8K Players</div>
+        <button class="btn btn-outline-red arena-btn magnetic-btn">PLAY NOW</button>
+      </div>
+      <div class="arena-card">
+        <div class="arena-title">SHADOW REALM</div>
+        <div class="arena-genre">RPG • COMING SOON</div>
+        <div class="countdown" style="margin:8px 0">14 : 08 : 52</div>
+        <button class="btn btn-outline-gold arena-btn magnetic-btn">WISHLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 9: NEWSLETTER -->
+  <section class="newsletter-section" style="position:relative">
+    <span class="section-number" style="top:20px;right:5%">07</span>
+    <h2 class="nl-title reveal-element">JOIN THE EMPIRE</h2>
+    <p class="nl-subtitle reveal-element">Receive classified transmissions</p>
+    <form class="newsletter-form reveal-element" id="newsletter-form">
+      <input type="email" placeholder="ENTER YOUR CODE NAME" required>
+      <button type="submit" class="btn btn-gold magnetic-btn">ENLIST</button>
+    </form>
+    <div class="newsletter-success" id="newsletter-success">✓ WELCOME, SOLDIER</div>
+  </section>
+
+  <!-- SECTION 10: FOOTER -->
+  <footer id="site-footer">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">YOUSUF UNBOUND</div>
+        <div class="footer-tagline">THE EMPIRE HAS NO LIMITS</div>
+        <div style="margin-top:16px;width:50px;height:50px">
+          <svg viewBox="0 0 100 100" width="50" height="50">
+            <polygon points="50,5 61,35 95,35 68,55 79,88 50,68 21,88 32,55 5,35 39,35" fill="none" stroke="#c9a84c" stroke-width="1"/>
+            <text x="50" y="56" text-anchor="middle" fill="#c9a84c" font-family="serif" font-size="20" font-weight="bold">YU</text>
+          </svg>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>QUICK LINKS</h4>
+        <a href="#" data-nav="films">Cinematic Vault</a>
+        <a href="#" data-nav="photos">Visual Archives</a>
+        <a href="#" data-nav="music">Sonic Empire</a>
+        <a href="#" data-nav="ai-art">Neural Canvas</a>
+        <a href="#" data-nav="games">Dark Arenas</a>
+        <a href="#" data-nav="shop">The Armory</a>
+        <a href="#" data-nav="apps">Command Systems</a>
+        <a href="#" data-nav="about">The Origin</a>
+      </div>
+      <div class="footer-col">
+        <h4>SOCIAL EMPIRE</h4>
+        <div class="social-icons">
+          <span class="social-icon" title="YouTube">▶</span>
+          <span class="social-icon" title="Instagram">◉</span>
+          <span class="social-icon" title="X">𝕏</span>
+          <span class="social-icon" title="TikTok">♪</span>
+          <span class="social-icon" title="SoundCloud">☁</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© YOUSUF UNBOUND EMPIRE — ALL DOMINIONS RESERVED</div>
+  </footer>
+</main>
+
+<!-- ============ SUB-PAGE: CINEMATIC VAULT ============ -->
+<section id="page-films" class="page-section">
+  <div class="subpage-hero">
+    <h1 class="page-title">CINEMATIC VAULT</h1>
+    <div class="page-underline"></div>
+  </div>
+  <button class="back-btn" data-nav="homepage">← RETURN</button>
+  <div class="filter-tabs">
+    <button class="filter-tab active" data-filter="all">ALL</button>
+    <button class="filter-tab" data-filter="short">SHORT FILMS</button>
+    <button class="filter-tab" data-filter="episodes">EPISODES</button>
+    <button class="filter-tab" data-filter="reels">REELS</button>
+  </div>
+  <div class="content-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="featured-card" style="aspect-ratio:16/9;height:auto"><div class="scanline-overlay"></div><span class="card-badge">SHORT FILM</span><div class="card-info"><div class="card-title">The Shadows Within</div><div class="card-desc">Duration: 12:34</div></div></div>
+    <div class="featured-card" style="aspect-ratio:16/9;height:auto"><div class="scanline-overlay"></div><span class="card-badge">EPISODE</span><div class="card-info"><div class="card-title">Empire Rising: Pt. I</div><div class="card-desc">Duration: 24:15</div></div></div>
+    <div class="featured-card" style="aspect-ratio:16/9;height:auto"><div class="scanline-overlay"></div><span class="card-badge">REEL</span><div class="card-info"><div class="card-title">Noir Montage</div><div class="card-desc">Duration: 01:45</div></div></div>
+    <div class="featured-card" style="aspect-ratio:16/9;height:auto"><div class="scanline-overlay"></div><span class="card-badge">SHORT FILM</span><div class="card-info"><div class="card-title">Dark Horizon</div><div class="card-desc">Duration: 18:22</div></div></div>
+    <div class="featured-card" style="aspect-ratio:16/9;height:auto"><div class="scanline-overlay"></div><span class="card-badge">EPISODE</span><div class="card-info"><div class="card-title">Empire Rising: Pt. II</div><div class="card-desc">Duration: 28:05</div></div></div>
+    <div class="featured-card" style="aspect-ratio:16/9;height:auto"><div class="scanline-overlay"></div><span class="card-badge">REEL</span><div class="card-info"><div class="card-title">Shadow Cuts</div><div class="card-desc">Duration: 02:10</div></div></div>
+  </div>
+</section>
+
+<!-- ============ SUB-PAGE: VISUAL ARCHIVES ============ -->
+<section id="page-photos" class="page-section">
+  <div class="subpage-hero">
+    <h1 class="page-title">VISUAL ARCHIVES</h1>
+    <div class="page-underline"></div>
+  </div>
+  <button class="back-btn" data-nav="homepage">← RETURN</button>
+  <div class="masonry-grid">
+    <div class="masonry-item"><div class="masonry-img" style="min-height:300px"></div><div class="masonry-info"><div class="m-title">Neon Noir #1</div></div></div>
+    <div class="masonry-item"><div class="masonry-img" style="min-height:220px"></div><div class="masonry-info"><div class="m-title">Shadow Series #2</div></div></div>
+    <div class="masonry-item"><div class="masonry-img" style="min-height:280px"></div><div class="masonry-info"><div class="m-title">Gold Hour #3</div></div></div>
+    <div class="masonry-item"><div class="masonry-img" style="min-height:200px"></div><div class="masonry-info"><div class="m-title">Empire Streets #1</div></div></div>
+    <div class="masonry-item"><div class="masonry-img" style="min-height:340px"></div><div class="masonry-info"><div class="m-title">Dark Silhouette #4</div></div></div>
+    <div class="masonry-item"><div class="masonry-img" style="min-height:250px"></div><div class="masonry-info"><div class="m-title">Red Line #2</div></div></div>
+  </div>
+  <div id="lightbox"><div class="lb-img"></div><div class="lb-controls"><button class="player-btn lb-prev">◂</button><button class="player-btn lb-next">▸</button></div><button class="lb-close">✕</button></div>
+</section>
+
+<!-- ============ SUB-PAGE: SONIC EMPIRE ============ -->
+<section id="page-music" class="page-section">
+  <div class="subpage-hero">
+    <h1 class="page-title">SONIC EMPIRE</h1>
+    <div class="page-underline"></div>
+  </div>
+  <button class="back-btn" data-nav="homepage">← RETURN</button>
+  <div class="filter-tabs">
+    <button class="filter-tab active" data-filter="all">ALL</button>
+    <button class="filter-tab" data-filter="ambient">AMBIENT</button>
+    <button class="filter-tab" data-filter="cinematic">CINEMATIC</button>
+    <button class="filter-tab" data-filter="beats">BEATS</button>
+  </div>
+  <div class="music-layout">
+    <div class="track-list">
+      <div class="track-item"><span class="track-num">01</span><div class="track-info"><div class="t-name">Midnight Protocol</div><div class="t-dur">AMBIENT • 6:42</div></div><span style="color:var(--accent-gold)">▶</span></div>
+      <div class="track-item"><span class="track-num">02</span><div class="track-info"><div class="t-name">Abyssal Drift</div><div class="t-dur">AMBIENT • 8:15</div></div><span style="color:var(--accent-gold)">▶</span></div>
+      <div class="track-item"><span class="track-num">03</span><div class="track-info"><div class="t-name">Empire Theme</div><div class="t-dur">CINEMATIC • 4:30</div></div><span style="color:var(--accent-gold)">▶</span></div>
+      <div class="track-item"><span class="track-num">04</span><div class="track-info"><div class="t-name">Shadow Pulse</div><div class="t-dur">BEATS • 3:22</div></div><span style="color:var(--accent-gold)">▶</span></div>
+      <div class="track-item"><span class="track-num">05</span><div class="track-info"><div class="t-name">Void Resonance</div><div class="t-dur">AMBIENT • 5:58</div></div><span style="color:var(--accent-gold)">▶</span></div>
+      <div class="track-item"><span class="track-num">06</span><div class="track-info"><div class="t-name">Gold Horizon</div><div class="t-dur">CINEMATIC • 7:10</div></div><span style="color:var(--accent-gold)">▶</span></div>
+    </div>
+    <div class="player-card" style="margin:0">
+      <div class="track-name">Now Playing</div>
+      <div class="track-artist">Select a track</div>
+      <div class="player-progress"><div class="player-progress-fill" style="width:30%"></div></div>
+      <div class="player-controls">
+        <button class="player-btn">⏮</button>
+        <button class="player-btn play-btn">▶</button>
+        <button class="player-btn">⏭</button>
+      </div>
+      <div class="player-visualizer"><canvas width="400" height="60" style="width:100%;height:60px"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUB-PAGE: NEURAL CANVAS ============ -->
+<section id="page-ai-art" class="page-section">
+  <div class="subpage-hero">
+    <h1 class="page-title">NEURAL CANVAS</h1>
+    <div class="page-underline"></div>
+  </div>
+  <button class="back-btn" data-nav="homepage">← RETURN</button>
+  <div class="filter-tabs">
+    <button class="filter-tab active" data-filter="all">ALL</button>
+    <button class="filter-tab" data-filter="portraits">PORTRAITS</button>
+    <button class="filter-tab" data-filter="landscapes">LANDSCAPES</button>
+    <button class="filter-tab" data-filter="abstract">ABSTRACT</button>
+    <button class="filter-tab" data-filter="cinematic-ai">CINEMATIC</button>
+  </div>
+  <div class="content-grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="featured-card" style="height:300px;border:1px solid rgba(var(--accent-gold-rgb),0.15)"><div class="scanline-overlay"></div><span class="card-badge">PORTRAIT</span><div class="card-info"><div class="card-title">Villain #1</div></div></div>
+    <div class="featured-card" style="height:300px;border:1px solid rgba(var(--accent-gold-rgb),0.15)"><div class="scanline-overlay"></div><span class="card-badge">LANDSCAPE</span><div class="card-info"><div class="card-title">Obsidian Throne</div></div></div>
+    <div class="featured-card" style="height:300px;border:1px solid rgba(var(--accent-gold-rgb),0.15)"><div class="scanline-overlay"></div><span class="card-badge">ABSTRACT</span><div class="card-info"><div class="card-title">Gold Fracture</div></div></div>
+    <div class="featured-card" style="height:300px;border:1px solid rgba(var(--accent-gold-rgb),0.15)"><div class="scanline-overlay"></div><span class="card-badge">CINEMATIC</span><div class="card-info"><div class="card-title">Empire Dawn</div></div></div>
+    <div class="featured-card" style="height:300px;border:1px solid rgba(var(--accent-gold-rgb),0.15)"><div class="scanline-overlay"></div><span class="card-badge">PORTRAIT</span><div class="card-info"><div class="card-title">Shadow Lord</div></div></div>
+    <div class="featured-card" style="height:300px;border:1px solid rgba(var(--accent-gold-rgb),0.15)"><div class="scanline-overlay"></div><span class="card-badge">ABSTRACT</span><div class="card-info"><div class="card-title">Neon Void</div></div></div>
+    <div class="featured-card" style="height:300px;border:1px solid rgba(var(--accent-gold-rgb),0.15)"><div class="scanline-overlay"></div><span class="card-badge">LANDSCAPE</span><div class="card-info"><div class="card-title">Red Horizon</div></div></div>
+    <div class="featured-card" style="height:300px;border:1px solid rgba(var(--accent-gold-rgb),0.15)"><div class="scanline-overlay"></div><span class="card-badge">CINEMATIC</span><div class="card-info"><div class="card-title">Villain Architecture</div></div></div>
+  </div>
+</section>
+
+<!-- ============ SUB-PAGE: DARK ARENAS ============ -->
+<section id="page-games" class="page-section">
+  <div class="subpage-hero">
+    <h1 class="page-title">DARK ARENAS</h1>
+    <div class="page-underline"></div>
+  </div>
+  <button class="back-btn" data-nav="homepage">← RETURN</button>
+  <div class="arena-cards" style="grid-template-columns:repeat(3,1fr);max-width:1200px">
+    <div class="arena-card"><div class="arena-title">EMPIRE SIEGE</div><div class="arena-genre">STRATEGY • MULTIPLAYER</div><div style="color:var(--accent-gold);font-size:11px">★ 4.8 / 2.4K Players</div><button class="btn btn-outline-red arena-btn magnetic-btn">PLAY NOW</button></div>
+    <div class="arena-card"><div class="arena-title">VOID RUNNER</div><div class="arena-genre">ACTION • ENDLESS</div><div style="color:var(--accent-gold);font-size:11px">★ 4.6 / 1.8K Players</div><button class="btn btn-outline-red arena-btn magnetic-btn">PLAY NOW</button></div>
+    <div class="arena-card"><div class="arena-title">SHADOW REALM</div><div class="arena-genre">RPG • COMING SOON</div><div class="countdown">14 : 08 : 52</div><button class="btn btn-outline-gold arena-btn magnetic-btn">WISHLIST</button></div>
+    <div class="arena-card"><div class="arena-title">NEON WARS</div><div class="arena-genre">FPS • COMPETITIVE</div><div style="color:var(--accent-gold);font-size:11px">★ 4.9 / 5.2K Players</div><button class="btn btn-outline-red arena-btn magnetic-btn">PLAY NOW</button></div>
+    <div class="arena-card"><div class="arena-title">DARK CHESS</div><div class="arena-genre">STRATEGY • 1v1</div><div style="color:var(--accent-gold);font-size:11px">★ 4.3 / 890 Players</div><button class="btn btn-outline-red arena-btn magnetic-btn">PLAY NOW</button></div>
+    <div class="arena-card"><div class="arena-title">EMPIRE RACING</div><div class="arena-genre">RACING • COMING SOON</div><div class="countdown">28 : 14 : 03</div><button class="btn btn-outline-gold arena-btn magnetic-btn">WISHLIST</button></div>
+  </div>
+</section>
+
+<!-- ============ SUB-PAGE: THE ARMORY ============ -->
+<section id="page-shop" class="page-section">
+  <div class="subpage-hero">
+    <h1 class="page-title">THE ARMORY</h1>
+    <div class="page-underline"></div>
+  </div>
+  <button class="back-btn" data-nav="homepage">← RETURN</button>
+  <div class="filter-tabs">
+    <button class="filter-tab active" data-filter="all">ALL</button>
+    <button class="filter-tab" data-filter="apparel">APPAREL</button>
+    <button class="filter-tab" data-filter="digital">DIGITAL</button>
+    <button class="filter-tab" data-filter="physical">PHYSICAL</button>
+  </div>
+  <div class="content-grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="featured-card" style="height:320px"><div class="scanline-overlay"></div><span class="card-badge">APPAREL</span><div class="card-info"><div class="card-title">Empire Hoodie</div><div class="card-desc" style="color:var(--accent-gold);opacity:1">$89.00</div></div></div>
+    <div class="featured-card" style="height:320px"><div class="scanline-overlay"></div><span class="card-badge">DIGITAL</span><div class="card-info"><div class="card-title">Sound Pack Vol. 1</div><div class="card-desc" style="color:var(--accent-gold);opacity:1">$24.00</div></div></div>
+    <div class="featured-card" style="height:320px"><div class="scanline-overlay"></div><span class="card-badge">PHYSICAL</span><div class="card-info"><div class="card-title">Gold Coin</div><div class="card-desc" style="color:var(--accent-gold);opacity:1">$49.00</div></div></div>
+    <div class="featured-card" style="height:320px"><div class="scanline-overlay"></div><span class="card-badge">APPAREL</span><div class="card-info"><div class="card-title">Noir Tee</div><div class="card-desc" style="color:var(--accent-gold);opacity:1">$39.00</div></div></div>
+  </div>
+</section>
+
+<!-- ============ SUB-PAGE: COMMAND SYSTEMS ============ -->
+<section id="page-apps" class="page-section">
+  <div class="subpage-hero">
+    <h1 class="page-title">COMMAND SYSTEMS</h1>
+    <div class="page-underline"></div>
+  </div>
+  <button class="back-btn" data-nav="homepage">← RETURN</button>
+  <div style="max-width:1200px;margin:0 auto;padding:20px 5%">
+    <div class="featured-card" style="height:200px;margin-bottom:24px;display:flex;align-items:center;justify-content:center;flex-direction:column">
+      <span class="card-badge" style="position:relative;top:auto;left:auto;margin-bottom:12px">FEATURED</span>
+      <div class="card-title" style="font-size:32px">EMPIRE OS</div>
+      <div style="color:var(--text-secondary);font-size:12px;margin:8px 0">Cross-platform command dashboard</div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <span style="padding:4px 12px;border:1px solid rgba(255,255,255,0.2);border-radius:12px;font-size:10px">iOS</span>
+        <span style="padding:4px 12px;border:1px solid rgba(255,255,255,0.2);border-radius:12px;font-size:10px">Android</span>
+        <span style="padding:4px 12px;border:1px solid rgba(255,255,255,0.2);border-radius:12px;font-size:10px">Web</span>
+      </div>
+      <button class="btn btn-gold magnetic-btn mt-16">DOWNLOAD</button>
+    </div>
+    <div class="content-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="featured-card" style="height:180px"><div class="scanline-overlay"></div><span class="card-badge">APP</span><div class="card-info"><div class="card-title">Empire Wallet</div><div class="card-desc">iOS • Android • Web</div></div></div>
+      <div class="featured-card" style="height:180px"><div class="scanline-overlay"></div><span class="card-badge">APP</span><div class="card-info"><div class="card-title">Shadow Chat</div><div class="card-desc">iOS • Android</div></div></div>
+      <div class="featured-card" style="height:180px"><div class="scanline-overlay"></div><span class="card-badge">APP</span><div class="card-info"><div class="card-title">Vault Sync</div><div class="card-desc">Web • Desktop</div></div></div>
+      <div class="featured-card" style="height:180px"><div class="scanline-overlay"></div><span class="card-badge">APP</span><div class="card-info"><div class="card-title">Empire Studio</div><div class="card-desc">Desktop</div></div></div>
+      <div class="featured-card" style="height:180px"><div class="scanline-overlay"></div><span class="card-badge">APP</span><div class="card-info"><div class="card-title">Codex Reader</div><div class="card-desc">iOS • Android • Web</div></div></div>
+      <div class="featured-card" style="height:180px"><div class="scanline-overlay"></div><span class="card-badge">COMING</span><div class="card-info"><div class="card-title">Empire AI</div><div class="card-desc">All Platforms</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUB-PAGE: THE ORIGIN ============ -->
+<section id="page-about" class="page-section">
+  <div class="subpage-hero">
+    <h1 class="page-title">THE ORIGIN</h1>
+    <div class="page-underline"></div>
+  </div>
+  <button class="back-btn" data-nav="homepage">← RETURN</button>
+  <div style="max-width:900px;margin:0 auto;padding:20px 5%">
+    <div class="spotlight-section" style="padding:0">
+      <div class="spotlight-art" style="flex:0 0 40%;aspect-ratio:3/4;min-height:300px"></div>
+      <div class="spotlight-info">
+        <h3 class="spot-title">Yousuf — The Architect</h3>
+        <p class="spot-desc">A digital empire builder. Creator of worlds. Curator of the dark and cinematic. From the shadows, an empire rises — unbounded, limitless, eternal.</p>
+      </div>
+    </div>
+    <blockquote style="font-family:var(--font-accent);font-size:clamp(18px,3vw,28px);color:var(--accent-gold);text-align:center;padding:30px 20px;font-style:italic;border-top:1px solid rgba(var(--accent-gold-rgb),0.2);border-bottom:1px solid rgba(var(--accent-gold-rgb),0.2);margin:40px 0">
+      "The empire has no limits. Neither do I."
+    </blockquote>
+    <div class="timeline">
+      <div class="timeline-item"><div class="tl-year">2020</div><div class="tl-text">The vision was born. First cinematic experiments.</div></div>
+      <div class="timeline-item"><div class="tl-year">2022</div><div class="tl-text">Empire established. First major film releases.</div></div>
+      <div class="timeline-item"><div class="tl-year">2024</div><div class="tl-text">Sonic Empire launched. 1000+ tracks.</div></div>
+      <div class="timeline-item"><div class="tl-year">2025</div><div class="tl-text">Neural Canvas born. AI art revolution.</div></div>
+      <div class="timeline-item"><div class="tl-year">2026</div><div class="tl-text">Global expansion. All dominions active.</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px">
+      <div style="text-align:center;padding:20px;border:1px solid rgba(var(--accent-gold-rgb),0.15);border-radius:8px">
+        <div style="font-size:28px;margin-bottom:8px">◈</div>
+        <div style="font-family:var(--font-heading);font-size:16px;letter-spacing:0.05em">VISION</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:4px">Uncompromising</div>
+      </div>
+      <div style="text-align:center;padding:20px;border:1px solid rgba(var(--accent-gold-rgb),0.15);border-radius:8px">
+        <div style="font-size:28px;margin-bottom:8px">◆</div>
+        <div style="font-family:var(--font-heading);font-size:16px;letter-spacing:0.05em">POWER</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:4px">Absolute</div>
+      </div>
+      <div style="text-align:center;padding:20px;border:1px solid rgba(var(--accent-gold-rgb),0.15);border-radius:8px">
+        <div style="font-size:28px;margin-bottom:8px">◉</div>
+        <div style="font-family:var(--font-heading);font-size:16px;letter-spacing:0.05em">LEGACY</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:4px">Eternal</div>
+      </div>
+      <div style="text-align:center;padding:20px;border:1px solid rgba(var(--accent-gold-rgb),0.15);border-radius:8px">
+        <div style="font-size:28px;margin-bottom:8px">⬡</div>
+        <div style="font-family:var(--font-heading);font-size:16px;letter-spacing:0.05em">EMPIRE</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:4px">Unbounded</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCRIPTS ============ -->
+<script>
+/* ================================================================
+   YOUSUF UNBOUND — MASTER JAVASCRIPT
+   All systems: cursor, music, particles, navigation, animations
+   ================================================================ */
+
+// ===== [WASM-EQUIVALENT] PRECALCULATED SIN/COS LOOKUP TABLE =====
+const TRIG_TABLE_SIZE = 360;
+const sinTable = new Float32Array(TRIG_TABLE_SIZE); // [WASM-EQUIVALENT] typed array
+const cosTable = new Float32Array(TRIG_TABLE_SIZE);
+for (let i = 0; i < TRIG_TABLE_SIZE; i++) {
+  const rad = (i * Math.PI) / 180;
+  sinTable[i] = Math.sin(rad);
+  cosTable[i] = Math.cos(rad);
+}
+function fastSin(deg) {
+  const idx = ((deg % 360) + 360) % 360;
+  const floor = Math.floor(idx);
+  return sinTable[floor] || Math.sin(idx * Math.PI / 180);
+}
+function fastCos(deg) {
+  const idx = ((deg % 360) + 360) % 360;
+  const floor = Math.floor(idx);
+  return cosTable[floor] || Math.cos(idx * Math.PI / 180);
+}
+
+// ===== [WASM-EQUIVALENT] OBJECT POOL FOR PARTICLES =====
+const PARTICLE_POOL_SIZE = 200;
+const particlePool = new Array(PARTICLE_POOL_SIZE);
+for (let i = 0; i < PARTICLE_POOL_SIZE; i++) {
+  particlePool[i] = {
+    x: 0, y: 0,
+    vx: 0, vy: 0,
+    size: 1 + Math.random() * 2,
+    opacity: 0.3 + Math.random() * 0.7,
+    alive: false
+  };
+}
+function acquireParticle() {
+  for (let i = 0; i < PARTICLE_POOL_SIZE; i++) {
+    if (!particlePool[i].alive) {
+      particlePool[i].alive = true;
+      return particlePool[i];
+    }
+  }
+  return null;
+}
+function releaseParticle(p) { p.alive = false; }
+
+// ===== GLOBAL STATE =====
+const STATE = {
+  cursorEnabled: true,
+  musicPlaying: false,
+  musicStarted: false,
+  currentPage: 'homepage',
+  introComplete: false,
+  isMobile: /Android|iPhone|iPad|iPod|webOS/i.test(navigator.userAgent) || window.innerWidth < 769,
+  mouseX: 0, mouseY: 0,
+  cursorDotX: 0, cursorDotY: 0,
+  cursorTrailX: 0, cursorTrailY: 0,
+  scrollY: 0,
+  konamiBuffer: ''
+};
+
+// ===== DOM CACHE =====
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+
+const dom = {
+  preloader: $('#preloader'),
+  introOverlay: $('#intro-overlay'),
+  introLogo: $('#intro-logo'),
+  introTagline: $('#intro-tagline'),
+  introScanline: $('#intro-overlay .scanline'),
+  introSkip: $('#intro-skip'),
+  loadingBar: $('#loading-bar'),
+  grainCanvas: $('#grain-canvas'),
+  cursorDot: $('#cursor-dot'),
+  cursorTrail: $('#cursor-trail'),
+  cursorEnterText: $('#cursor-trail .enter-text'),
+  topNav: $('#top-nav'),
+  hamburger: $('#hamburger'),
+  navDrawer: $('#nav-drawer'),
+  drawerItems: $$('#nav-drawer .drawer-item'),
+  musicBtn: $('#btn-music'),
+  cursorBtn: $('#btn-cursor'),
+  eqBars: $('#eq-bars'),
+  heroCanvas: $('#hero-canvas'),
+  heroLogo: $('#hero-logo'),
+  heroTagline: $('#hero-tagline'),
+  scrollProgress: $('#scroll-progress'),
+  letterboxTop: $('.letterbox-top'),
+  letterboxBottom: $('.letterbox-bottom'),
+  lineWipe: $('.line-wipe'),
+  newsletterForm: $('#newsletter-form'),
+  newsletterSuccess: $('#newsletter-success'),
+  playerProgress: $('#player-progress-fill'),
+  playerPlayBtn: $('#player-play'),
+  playerCanvas: $('#player-canvas'),
+  musicOverlay: $('#music-overlay'),
+  contextMenu: $('#context-menu'),
+  easterEgg: $('#easter-egg'),
+  easterLightning: $('#easter-egg .lightning'),
+  hscrollRow: $('#hscroll-row'),
+  lightbox: $('#lightbox'),
+  mobileNav: $('#mobile-nav'),
+  tooltip: $('#tooltip')
+};
+
+// ===== IS MOBILE CHECK =====
+function checkMobile() {
+  STATE.isMobile = /Android|iPhone|iPad|iPod|webOS/i.test(navigator.userAgent) || window.innerWidth < 769;
+}
+window.addEventListener('resize', checkMobile);
+
+// ============================================================
+// PRELOADER
+// ============================================================
+window.addEventListener('load', () => {
+  // Loading bar fills
+  dom.loadingBar.style.width = '100%';
+  setTimeout(() => {
+    dom.preloader.classList.add('hidden');
+    dom.loadingBar.style.opacity = '0';
+  }, 1800);
+});
+
+// ============================================================
+// CINEMATIC INTRO SEQUENCE
+// ============================================================
+function startIntro() {
+  // Scanline sweep at 0.5s
+  setTimeout(() => {
+    dom.introScanline.classList.add('active');
+  }, 500);
+
+  // Logo glitch in at 1s
+  setTimeout(() => {
+    glitchInText(dom.introLogo, 'YOUSUF UNBOUND', () => {
+      dom.introLogo.classList.add('visible');
+    });
+  }, 1000);
+
+  // Tagline at 2s
+  setTimeout(() => {
+    dom.introTagline.classList.add('visible');
+  }, 2000);
+
+  // Gold particle burst at 3s
+  setTimeout(() => {
+    spawnBurstParticles();
+  }, 3000);
+
+  // Fade out intro at 3.5s
+  setTimeout(() => {
+    dom.introOverlay.classList.add('hidden');
+    dom.letterboxTop.classList.add('retract');
+    dom.letterboxBottom.classList.add('retract');
+    STATE.introComplete = true;
+    // Try autoplay music
+    tryStartMusic();
+  }, 3500);
+
+  // Skip button
+  setTimeout(() => {
+    dom.introSkip.classList.add('visible');
+  }, 1000);
+}
+
+function skipIntro() {
+  dom.introOverlay.classList.add('hidden');
+  dom.letterboxTop.classList.add('retract');
+  dom.letterboxBottom.classList.add('retract');
+  STATE.introComplete = true;
+  tryStartMusic();
+}
+
+dom.introSkip.addEventListener('click', skipIntro);
+
+function glitchInText(el, finalText, callback) {
+  const chars = finalText.split('');
+  el.textContent = '';
+  chars.forEach((char, i) => {
+    const span = document.createElement('span');
+    span.className = 'char';
+    span.textContent = randomChar();
+    el.appendChild(span);
+    const delay = i * 60;
+    const scrambleEnd = delay + 200;
+    const interval = setInterval(() => {
+      span.textContent = randomChar();
+    }, 40);
+    setTimeout(() => {
+      clearInterval(interval);
+      span.textContent = char;
+      span.style.color = '#c9a84c';
+      if (i === chars.length - 1 && callback) callback();
+    }, scrambleEnd);
+  });
+}
+
+function randomChar() {
+  const chars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  return chars[Math.floor(Math.random() * chars.length)];
+}
+
+function spawnBurstParticles() {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  for (let i = 0; i < 30; i++) {
+    const p = acquireParticle();
+    if (!p) continue;
+    p.x = cx;
+    p.y = cy;
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 80 + Math.random() * 200;
+    p.vx = Math.cos(angle) * speed;
+    p.vy = Math.sin(angle) * speed;
+    p.size = 1 + Math.random() * 2;
+    p.opacity = 0.5 + Math.random() * 0.5;
+    p.life = 1.5;
+    burstParticles.push(p);
+  }
+}
+
+const burstParticles = [];
+
+// ============================================================
+// FILM GRAIN CANVAS
+// ============================================================
+(function initGrain() {
+  const canvas = dom.grainCanvas;
+  const ctx = canvas.getContext('2d');
+  let frameCount = 0;
+
+  function resizeGrain() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeGrain();
+  window.addEventListener('resize', resizeGrain);
+
+  function drawGrain() {
+    frameCount++;
+    if (frameCount % 2 !== 0) return; // [WASM-EQUIVALENT] 30fps grain for perf
+    const w = canvas.width;
+    const h = canvas.height;
+    const imageData = ctx.createImageData(w, h);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const v = Math.random() * 255;
+      data[i] = v;
+      data[i + 1] = v;
+      data[i + 2] = v;
+      data[i + 3] = 255;
+    }
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  window._grainDraw = drawGrain;
+})();
+
+// ============================================================
+// CUSTOM CURSOR SYSTEM
+// ============================================================
+function initCursor() {
+  if (STATE.isMobile) {
+    dom.cursorDot.classList.add('hidden');
+    dom.cursorTrail.classList.add('hidden');
+    document.body.style.cursor = 'auto';
+    return;
+  }
+
+  const dot = dom.cursorDot;
+  const trail = dom.cursorTrail;
+
+  document.addEventListener('mousemove', (e) => {
+    STATE.mouseX = e.clientX;
+    STATE.mouseY = e.clientY;
+    STATE.cursorDotX = e.clientX;
+    STATE.cursorDotY = e.clientY;
+  });
+
+  // Click burst
+  document.addEventListener('click', (e) => {
+    if (!STATE.cursorEnabled) return;
+    if (STATE.isMobile) return;
+    const burst = document.createElement('div');
+    burst.className = 'cursor-burst';
+    burst.style.left = e.clientX + 'px';
+    burst.style.top = e.clientY + 'px';
+    document.body.appendChild(burst);
+    setTimeout(() => burst.remove(), 250);
+  });
+
+  // Hover detection for interactive elements
+  document.addEventListener('mouseover', (e) => {
+    if (!STATE.cursorEnabled || STATE.isMobile) return;
+    const target = e.target.closest('a, button, .btn, .featured-card, .hscroll-card, .arena-card, .drawer-item, .social-icon, .track-item, .filter-tab, .masonry-item, .player-btn, .nav-pill, .hscroll-arrow');
+    if (target) {
+      trail.classList.add('hovering');
+      trail.style.width = '48px';
+      trail.style.height = '48px';
+      trail.style.borderColor = 'var(--accent-red)';
+      dot.style.display = 'none';
+      dom.cursorEnterText.style.color = 'var(--accent-red)';
+    }
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    if (!STATE.cursorEnabled || STATE.isMobile) return;
+    const target = e.target.closest('a, button, .btn, .featured-card, .hscroll-card, .arena-card, .drawer-item, .social-icon, .track-item, .filter-tab, .masonry-item, .player-btn, .nav-pill, .hscroll-arrow');
+    if (target && !e.relatedTarget?.closest('a, button, .btn, .featured-card, .hscroll-card, .arena-card, .drawer-item, .social-icon, .track-item, .filter-tab, .masonry-item, .player-btn, .nav-pill, .hscroll-arrow')) {
+      trail.classList.remove('hovering');
+      trail.style.width = '32px';
+      trail.style.height = '32px';
+      trail.style.borderColor = 'var(--accent-gold)';
+      dot.style.display = 'block';
+      dom.cursorEnterText.style.color = 'transparent';
+    }
+  });
+}
+
+// ===== CURSOR TRAIL PARTICLES =====
+const trailParticles = [];
+let lastTrailSpawn = 0;
+
+function spawnTrailParticle(x, y) {
+  const now = performance.now();
+  if (now - lastTrailSpawn < 30) return;
+  if (trailParticles.length >= 20) {
+    const old = trailParticles.shift();
+    if (old.el) old.el.remove();
+  }
+  lastTrailSpawn = now;
+  const el = document.createElement('div');
+  el.className = 'cursor-particle';
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  document.body.appendChild(el);
+  trailParticles.push({ el, spawned: now });
+}
+
+// ===== TOUCH RIPPLE (Mobile) =====
+document.addEventListener('touchstart', (e) => {
+  if (!STATE.isMobile) return;
+  const touch = e.touches[0];
+  const ripple = document.createElement('div');
+  ripple.className = 'touch-ripple';
+  ripple.style.left = touch.clientX + 'px';
+  ripple.style.top = touch.clientY + 'px';
+  document.body.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 450);
+});
+
+// ===== CURSOR TOGGLE =====
+dom.cursorBtn.addEventListener('click', () => {
+  STATE.cursorEnabled = !STATE.cursorEnabled;
+  if (STATE.cursorEnabled) {
+    dom.cursorDot.classList.remove('hidden');
+    dom.cursorTrail.classList.remove('hidden');
+    document.body.style.cursor = 'none';
+  } else {
+    dom.cursorDot.classList.add('hidden');
+    dom.cursorTrail.classList.add('hidden');
+    document.body.style.cursor = 'auto';
+  }
+});
+
+// ============================================================
+// PROCEDURAL DARK AMBIENT MUSIC (Web Audio API)
+// ============================================================
+let audioCtx = null;
+let masterGain = null;
+let droneOsc1 = null, droneOsc2 = null;
+let droneGain1 = null, droneGain2 = null;
+let filterNode = null;
+let pulseGain = null;
+let analyserNode = null;
+
+function initAudio() {
+  if (audioCtx) return;
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0;
+    masterGain.connect(audioCtx.destination);
+
+    // Analyser for visualizer
+    analyserNode = audioCtx.createAnalyser();
+    analyserNode.fftSize = 128;
+    analyserNode.connect(audioCtx.destination);
+
+    // Low-pass filter
+    filterNode = audioCtx.createBiquadFilter();
+    filterNode.type = 'lowpass';
+    filterNode.frequency.value = 400;
+    filterNode.Q.value = 1;
+
+    // Drone oscillator 1 (sawtooth, 55Hz)
+    droneOsc1 = audioCtx.createOscillator();
+    droneOsc1.type = 'sawtooth';
+    droneOsc1.frequency.value = 55;
+    droneGain1 = audioCtx.createGain();
+    droneGain1.gain.value = 0.15;
+    droneOsc1.connect(droneGain1);
+    droneGain1.connect(filterNode);
+    filterNode.connect(masterGain);
+    filterNode.connect(analyserNode);
+
+    // Drone oscillator 2 (sine, 110Hz)
+    droneOsc2 = audioCtx.createOscillator();
+    droneOsc2.type = 'sine';
+    droneOsc2.frequency.value = 110;
+    droneGain2 = audioCtx.createGain();
+    droneGain2.gain.value = 0.08;
+    droneOsc2.connect(droneGain2);
+    droneGain2.connect(filterNode);
+
+    // Rhythmic pulse
+    pulseGain = audioCtx.createGain();
+    pulseGain.gain.value = 0;
+    const pulseOsc = audioCtx.createOscillator();
+    pulseOsc.type = 'sine';
+    pulseOsc.frequency.value = 40;
+    pulseOsc.connect(pulseGain);
+    pulseGain.connect(filterNode);
+
+    droneOsc1.start();
+    droneOsc2.start();
+    pulseOsc.start();
+
+    // Pulse rhythm every 4 beats (~2.4s at 100bpm)
+    setInterval(() => {
+      if (STATE.musicPlaying && audioCtx && audioCtx.state === 'running') {
+        pulseGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        pulseGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+      }
+    }, 2400);
+
+  } catch(e) {
+    console.log('Web Audio API init failed:', e);
+  }
+}
+
+function startMusic() {
+  initAudio();
+  if (!audioCtx) return;
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume().then(() => _startMusicPlayback());
+  } else {
+    _startMusicPlayback();
+  }
+}
+
+function _startMusicPlayback() {
+  STATE.musicPlaying = true;
+  STATE.musicStarted = true;
+  dom.eqBars.classList.add('playing');
+  masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
+  masterGain.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 3);
+  dom.musicOverlay.classList.remove('show');
+}
+
+function stopMusic() {
+  if (!audioCtx) return;
+  STATE.musicPlaying = false;
+  dom.eqBars.classList.remove('playing');
+  masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
+}
+
+function toggleMusic() {
+  if (!STATE.musicStarted) {
+    startMusic();
+    return;
+  }
+  if (STATE.musicPlaying) {
+    stopMusic();
+  } else {
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume().then(() => _startMusicPlayback());
+    } else {
+      _startMusicPlayback();
+    }
+  }
+}
+
+dom.musicBtn.addEventListener('click', toggleMusic);
+
+// Autoplay attempt
+function tryStartMusic() {
+  initAudio();
+  if (!audioCtx) return;
+  if (audioCtx.state === 'suspended') {
+    // Show click overlay
+    dom.musicOverlay.classList.add('show');
+  } else {
+    _startMusicPlayback();
+  }
+}
+
+// Click overlay to start
+dom.musicOverlay.addEventListener('click', () => {
+  startMusic();
+});
+
+// ============================================================
+// PARTICLE CONSTELLATION SYSTEM (Hero Canvas)
+// ============================================================
+(function initHeroParticles() {
+  const canvas = dom.heroCanvas;
+  const ctx = canvas.getContext('2d');
+  const isMobile = STATE.isMobile;
+  const PARTICLE_COUNT = isMobile ? 60 : 200;
+  const CONNECT_DIST = 80;
+
+  // [WASM-EQUIVALENT] Pre-allocated particle arrays
+  const particles = new Array(PARTICLE_COUNT);
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    particles[i] = {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      size: 1 + Math.random() * 2
+    };
+  }
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    // Reset positions
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles[i].x = Math.random() * canvas.width;
+      particles[i].y = Math.random() * canvas.height;
+    }
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function drawParticles(timestamp) {
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const mouseRepel = STATE.introComplete && !STATE.isMobile;
+    const mx = STATE.mouseX;
+    const my = STATE.mouseY;
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const p = particles[i];
+      // Move
+      p.x += p.vx;
+      p.y += p.vy;
+
+      // Wrap
+      if (p.x < 0) p.x = w;
+      if (p.x > w) p.x = 0;
+      if (p.y < 0) p.y = h;
+      if (p.y > h) p.y = 0;
+
+      // Mouse repulsion
+      if (mouseRepel) {
+        const dx = p.x - mx;
+        const dy = p.y - my;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 100 && dist > 0) {
+          const force = (100 - dist) / 100 * 2;
+          p.vx += (dx / dist) * force * 0.1;
+          p.vy += (dy / dist) * force * 0.1;
+        }
+      }
+
+      // Velocity damping
+      p.vx *= 0.999;
+      p.vy *= 0.999;
+
+      // Clamp velocity
+      const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+      if (speed > 1.5) {
+        p.vx = (p.vx / speed) * 1.5;
+        p.vy = (p.vy / speed) * 1.5;
+      }
+
+      // Draw particle
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(201,168,76,0.7)';
+      ctx.fill();
+    }
+
+    // Draw connections
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONNECT_DIST) {
+          const opacity = 1 - dist / CONNECT_DIST;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(201,168,76,${opacity * 0.3})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  // Parallax for hero particles
+  function updateParallax() {
+    const scrollY = window.scrollY || window.pageYOffset;
+    const parallax = scrollY * 0.3;
+    canvas.style.transform = `translateY(${parallax}px)`;
+  }
+
+  window._heroParticlesDraw = drawParticles;
+  window._heroParallax = updateParallax;
+})();
+
+// ============================================================
+// PLAYER VISUALIZER
+// ============================================================
+(function initPlayerVisualizer() {
+  const canvas = dom.playerCanvas;
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = 60;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function drawVisualizer() {
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const barCount = 64;
+    const barWidth = w / barCount;
+
+    for (let i = 0; i < barCount; i++) {
+      let barHeight;
+      if (analyserNode && STATE.musicPlaying) {
+        const dataArray = new Uint8Array(analyserNode.frequencyBinCount);
+        analyserNode.getByteFrequencyData(dataArray);
+        barHeight = (dataArray[i % dataArray.length] / 255) * h;
+      } else {
+        // Simulated idle waveform
+        barHeight = (Math.sin(i * 0.3 + performance.now() * 0.002) * 0.3 + 0.3) * h * 0.5;
+      }
+      const gradient = ctx.createLinearGradient(0, h, 0, h - barHeight);
+      gradient.addColorStop(0, 'rgba(201,168,76,0.8)');
+      gradient.addColorStop(1, 'rgba(201,168,76,0.2)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(i * barWidth + 1, h - barHeight, barWidth - 1, barHeight);
+    }
+  }
+
+  window._visualizerDraw = drawVisualizer;
+})();
+
+// ============================================================
+// PLAYER CONTROLS
+// ============================================================
+(function initPlayer() {
+  if (!dom.playerPlayBtn) return;
+  let playerActive = false;
+  let playStartTime = 0;
+  const DURATION = 242; // ~4 min in seconds
+
+  dom.playerPlayBtn.addEventListener('click', () => {
+    playerActive = !playerActive;
+    dom.playerPlayBtn.textContent = playerActive ? '⏸' : '▶';
+    if (playerActive) {
+      playStartTime = performance.now() / 1000;
+    }
+  });
+
+  dom.playerProgress.parentElement.addEventListener('click', (e) => {
+    const rect = e.target.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    dom.playerProgress.style.width = (pct * 100) + '%';
+  });
+
+  // Animate progress
+  window._updatePlayerProgress = function() {
+    if (playerActive) {
+      const elapsed = (performance.now() / 1000) - playStartTime;
+      const pct = Math.min((elapsed / DURATION) * 100, 100);
+      dom.playerProgress.style.width = pct + '%';
+      if (pct >= 100) {
+        playerActive = false;
+        dom.playerPlayBtn.textContent = '▶';
+        dom.playerProgress.style.width = '0%';
+      }
+    }
+  };
+})();
+
+// ============================================================
+// NAVIGATION SYSTEM
+// ============================================================
+dom.hamburger.addEventListener('click', () => {
+  dom.hamburger.classList.toggle('active');
+  dom.navDrawer.classList.toggle('open');
+});
+
+// Drawer item clicks
+dom.drawerItems.forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.preventDefault();
+    const page = item.dataset.page;
+    navigateTo(page);
+    dom.hamburger.classList.remove('active');
+    dom.navDrawer.classList.remove('open');
+  });
+});
+
+// All navigation links
+document.addEventListener('click', (e) => {
+  const navLink = e.target.closest('[data-nav]');
+  if (navLink) {
+    e.preventDefault();
+    navigateTo(navLink.dataset.nav);
+  }
+  // Back buttons
+  if (e.target.closest('.back-btn')) {
+    e.preventDefault();
+    navigateTo('homepage');
+  }
+  // Mobile nav
+  if (e.target.closest('.mob-nav-item')) {
+    const page = e.target.closest('.mob-nav-item').dataset.page;
+    navigateTo(page);
+  }
+});
+
+function navigateTo(pageName) {
+  if (STATE.currentPage === pageName) return;
+
+  // Fade out current
+  const currentEl = document.getElementById(STATE.currentPage === 'homepage' ? 'homepage' : 'page-' + STATE.currentPage);
+  if (currentEl) {
+    currentEl.classList.remove('active');
+    if (pageName === 'homepage') {
+      // Homepage uses different selector
+    } else {
+      currentEl.style.display = 'none';
+    }
+  }
+
+  // History API
+  if (pageName === 'homepage') {
+    history.pushState({ page: 'homepage' }, '', '/');
+  } else {
+    history.pushState({ page: pageName }, '', '#' + pageName);
+  }
+
+  // Fade in new
+  const targetEl = pageName === 'homepage' ? document.getElementById('homepage') : document.getElementById('page-' + pageName);
+  if (targetEl) {
+    targetEl.style.display = 'block';
+    targetEl.style.opacity = '0';
+    targetEl.style.transform = 'translateY(-20px)';
+    requestAnimationFrame(() => {
+      targetEl.style.opacity = '1';
+      targetEl.style.transform = 'translateY(0)';
+      targetEl.classList.add('active');
+    });
+  }
+
+  STATE.currentPage = pageName;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// History back
+window.addEventListener('popstate', (e) => {
+  if (e.state && e.state.page) {
+    navigateTo(e.state.page);
+  } else {
+    navigateTo('homepage');
+  }
+});
+
+// ============================================================
+// SCROLL-TRIGGERED REVEAL ANIMATIONS (Intersection Observer)
+// ============================================================
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      // Stagger children
+      if (entry.target.classList.contains('reveal-stagger')) {
+        const children = entry.target.children;
+        Array.from(children).forEach((child, i) => {
+          setTimeout(() => {
+            child.classList.add('revealed');
+          }, i * 100);
+        });
+      }
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal-element, .reveal-stagger').forEach(el => {
+  revealObserver.observe(el);
+});
+
+// ============================================================
+// STATS COUNTER ANIMATION
+// ============================================================
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const statNumbers = entry.target.querySelectorAll('[data-count]');
+      statNumbers.forEach(el => {
+        const target = parseInt(el.dataset.count);
+        animateCounter(el, target);
+      });
+      statsObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+const statsSection = document.querySelector('.stats-section');
+if (statsSection) statsObserver.observe(statsSection);
+
+function animateCounter(el, target) {
+  const duration = 2000;
+  const start = performance.now();
+  const initial = 0;
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out cubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.floor(initial + (target - initial) * eased);
+    el.textContent = target >= 1000 ? (current / 1000).toFixed(1) + 'K' : current + '+';
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      el.textContent = target >= 1000 ? (target / 1000).toFixed(1) + 'K' : target + '+';
+    }
+  }
+  requestAnimationFrame(update);
+}
+
+// ============================================================
+// NEWSLETTER FORM
+// ============================================================
+if (dom.newsletterForm) {
+  dom.newsletterForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    dom.newsletterSuccess.classList.add('show');
+    dom.newsletterForm.reset();
+    setTimeout(() => {
+      dom.newsletterSuccess.classList.remove('show');
+    }, 3000);
+  });
+}
+
+// ============================================================
+// GLITCH TEXT EFFECT (Hero Logo)
+// ============================================================
+function triggerGlitch() {
+  const el = dom.heroLogo;
+  if (!el) return;
+  el.classList.add('glitching');
+  setTimeout(() => el.classList.remove('glitching'), 500);
+}
+// Every 8 seconds
+setInterval(triggerGlitch, 8000);
+// On hover
+if (dom.heroLogo) {
+  dom.heroLogo.addEventListener('mouseenter', triggerGlitch);
+}
+
+// ============================================================
+// TYPEWRITER EFFECT (Hero Tagline)
+// ============================================================
+(function initTypewriter() {
+  const el = dom.heroTagline;
+  if (!el) return;
+  const text = 'THE EMPIRE HAS NO LIMITS';
+  let charIndex = 0;
+  let isDeleting = false;
+
+  function type() {
+    if (isDeleting) {
+      el.textContent = text.substring(0, charIndex);
+      charIndex--;
+      if (charIndex < 0) {
+        isDeleting = false;
+        setTimeout(type, 800);
+        return;
+      }
+    } else {
+      el.textContent = text.substring(0, charIndex) + '|';
+      charIndex++;
+      if (charIndex > text.length) {
+        isDeleting = true;
+        setTimeout(type, 3000);
+        return;
+      }
+    }
+    setTimeout(type, isDeleting ? 30 : 80);
+  }
+  // Start after intro
+  setTimeout(type, 4000);
+  // Loop every 12 seconds
+  setInterval(() => {
+    charIndex = 0;
+    isDeleting = false;
+  }, 12000);
+})();
+
+// ============================================================
+// MAGNETIC BUTTON EFFECT
+// ============================================================
+document.addEventListener('mousemove', (e) => {
+  if (STATE.isMobile) return;
+  const btns = document.querySelectorAll('.magnetic-btn');
+  btns.forEach(btn => {
+    const rect = btn.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 60) {
+      const mx = (dx / 60) * 6;
+      const my = (dy / 60) * 6;
+      btn.style.transform = `translate(${mx}px, ${my}px)`;
+      btn.style.transition = 'transform 0.1s ease-out';
+    } else {
+      btn.style.transform = 'translate(0, 0)';
+      btn.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+    }
+  });
+});
+
+// ============================================================
+// SCROLL PROGRESS INDICATOR
+// ============================================================
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  dom.scrollProgress.style.height = pct + '%';
+  STATE.scrollY = scrollTop;
+}, { passive: true });
+
+// ============================================================
+// HORIZONTAL SCROLL (Drag + Arrow Buttons)
+// ============================================================
+(function initHScroll() {
+  const row = dom.hscrollRow;
+  if (!row) return;
+
+  let isDown = false;
+  let startX, scrollLeftPos;
+
+  row.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - row.offsetLeft;
+    scrollLeftPos = row.scrollLeft;
+  });
+  row.addEventListener('mouseleave', () => { isDown = false; });
+  row.addEventListener('mouseup', () => { isDown = false; });
+  row.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - row.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    row.scrollLeft = scrollLeftPos - walk;
+  });
+  // Touch
+  row.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].pageX - row.offsetLeft;
+    scrollLeftPos = row.scrollLeft;
+  });
+  row.addEventListener('touchmove', (e) => {
+    const x = e.touches[0].pageX - row.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    row.scrollLeft = scrollLeftPos - walk;
+  });
+
+  document.getElementById('hscroll-left')?.addEventListener('click', () => {
+    row.scrollBy({ left: -250, behavior: 'smooth' });
+  });
+  document.getElementById('hscroll-right')?.addEventListener('click', () => {
+    row.scrollBy({ left: 250, behavior: 'smooth' });
+  });
+})();
+
+// ============================================================
+// LIGHTBOX (Photos Page)
+// ============================================================
+(function initLightbox() {
+  const lb = dom.lightbox;
+  if (!lb) return;
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.masonry-item')) {
+      lb.classList.add('open');
+    }
+    if (e.target.closest('.lb-close')) {
+      lb.classList.remove('open');
+    }
+    if (e.target.closest('.lb-prev') || e.target.closest('.lb-next')) {
+      // Cycle through masonry items (placeholder behavior)
+    }
+  });
+  lb?.addEventListener('click', (e) => {
+    if (e.target === lb) lb.classList.remove('open');
+  });
+})();
+
+// ============================================================
+// FILTER TABS
+// ============================================================
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.filter-tab')) {
+    const tab = e.target.closest('.filter-tab');
+    const parent = tab.parentElement;
+    parent.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  }
+});
+
+// ============================================================
+// CUSTOM CONTEXT MENU
+// ============================================================
+document.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  const menu = dom.contextMenu;
+  menu.style.left = e.clientX + 'px';
+  menu.style.top = e.clientY + 'px';
+  menu.classList.add('show');
+});
+document.addEventListener('click', () => {
+  dom.contextMenu.classList.remove('show');
+});
+dom.contextMenu.addEventListener('click', (e) => {
+  const item = e.target.closest('.ctx-item');
+  if (!item) return;
+  const action = item.dataset.action;
+  switch (action) {
+    case 'home': navigateTo('homepage'); break;
+    case 'fullscreen':
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        document.documentElement.requestFullscreen();
+      }
+      break;
+    case 'music': toggleMusic(); break;
+    case 'cursor':
+      STATE.cursorEnabled = !STATE.cursorEnabled;
+      dom.cursorDot.classList.toggle('hidden', !STATE.cursorEnabled);
+      dom.cursorTrail.classList.toggle('hidden', !STATE.cursorEnabled);
+      document.body.style.cursor = STATE.cursorEnabled ? 'none' : 'auto';
+      break;
+  }
+  dom.contextMenu.classList.remove('show');
+});
+
+// ============================================================
+// KONAMI CODE EASTER EGG
+// ============================================================
+const KONAMI = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightKeyBKeyA';
+document.addEventListener('keydown', (e) => {
+  STATE.konamiBuffer += e.key;
+  if (STATE.konamiBuffer.length > 50) STATE.konamiBuffer = STATE.konamiBuffer.slice(-30);
+  if (STATE.konamiBuffer.includes(KONAMI)) {
+    triggerEasterEgg();
+    STATE.konamiBuffer = '';
+  }
+});
+
+function triggerEasterEgg() {
+  const egg = dom.easterEgg;
+  const lightning = dom.easterLightning;
+  egg.classList.add('active');
+  lightning.classList.add('active');
+  document.body.style.background = '#1a0000';
+  setTimeout(() => {
+    lightning.classList.remove('active');
+    egg.classList.remove('active');
+    document.body.style.background = '';
+  }, 2000);
+}
+
+// ============================================================
+// SWIPE TO CLOSE DRAWER (Mobile)
+// ============================================================
+let touchStartX = 0;
+dom.navDrawer.addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].clientX;
+});
+dom.navDrawer.addEventListener('touchmove', (e) => {
+  const dx = e.touches[0].clientX - touchStartX;
+  if (dx > 60) {
+    dom.hamburger.classList.remove('active');
+    dom.navDrawer.classList.remove('open');
+  }
+});
+
+// ============================================================
+// SECTION REVEAL WIPE (Gold line)
+// ============================================================
+let lastSectionWipe = '';
+const sectionWipeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && entry.target.id && entry.target.id !== lastSectionWipe) {
+      lastSectionWipe = entry.target.id;
+      const wipe = dom.lineWipe;
+      wipe.style.top = (entry.target.getBoundingClientRect().top + window.scrollY) + 'px';
+      wipe.classList.add('active');
+      setTimeout(() => wipe.classList.remove('active'), 150);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('section[id], .subpage-hero').forEach(section => {
+  sectionWipeObserver.observe(section);
+});
+
+// ============================================================
+// TOOLTIP SYSTEM
+// ============================================================
+document.addEventListener('mouseover', (e) => {
+  const target = e.target.closest('[title]');
+  if (!target || STATE.isMobile) return;
+  const tooltip = dom.tooltip;
+  tooltip.textContent = target.getAttribute('title');
+  tooltip.style.left = e.clientX + 16 + 'px';
+  tooltip.style.top = e.clientY - 36 + 'px';
+  tooltip.classList.add('show');
+});
+document.addEventListener('mouseout', (e) => {
+  if (e.target.closest('[title]')) {
+    dom.tooltip.classList.remove('show');
+  }
+});
+document.addEventListener('mousemove', (e) => {
+  if (dom.tooltip.classList.contains('show')) {
+    dom.tooltip.style.left = e.clientX + 16 + 'px';
+    dom.tooltip.style.top = e.clientY - 36 + 'px';
+  }
+});
+
+// ============================================================
+// MASTER REQUEST ANIMATION FRAME LOOP
+// [WASM-EQUIVALENT] Single rAF master loop with delta time
+// ============================================================
+let lastFrameTime = performance.now();
+
+function masterLoop(timestamp) {
+  const dt = (timestamp - lastFrameTime) / 1000; // [WASM-EQUIVALENT] delta time
+  lastFrameTime = timestamp;
+
+  // Cursor trail interpolation (lerp)
+  if (STATE.cursorEnabled && !STATE.isMobile) {
+    const lerpFactor = 1 - Math.exp(-15 * dt); // frame-rate independent lerp
+
+    STATE.cursorTrailX += (STATE.mouseX - STATE.cursorTrailX) * lerpFactor;
+    STATE.cursorTrailY += (STATE.mouseY - STATE.cursorTrailY) * lerpFactor;
+
+    dom.cursorDot.style.left = STATE.mouseX + 'px';
+    dom.cursorDot.style.top = STATE.mouseY + 'px';
+    dom.cursorTrail.style.left = STATE.cursorTrailX + 'px';
+    dom.cursorTrail.style.top = STATE.cursorTrailY + 'px';
+
+    // Trail particles on fast movement
+    const dx = STATE.mouseX - STATE.cursorTrailX;
+    const dy = STATE.mouseY - STATE.cursorTrailY;
+    const speed = Math.sqrt(dx * dx + dy * dy);
+    if (speed > 8) {
+      spawnTrailParticle(STATE.mouseX, STATE.mouseY);
+    }
+  }
+
+  // Cleanup trail particles
+  for (let i = trailParticles.length - 1; i >= 0; i--) {
+    if (timestamp - trailParticles[i].spawned > 800) {
+      trailParticles[i].el.remove();
+      trailParticles.splice(i, 1);
+    }
+  }
+
+  // Burst particles
+  for (let i = burstParticles.length - 1; i >= 0; i--) {
+    const p = burstParticles[i];
+    p.x += p.vx * dt;
+    p.y += p.vy * dt;
+    p.life -= dt;
+    if (p.life <= 0) {
+      releaseParticle(p);
+      burstParticles.splice(i, 1);
+    }
+  }
+
+  // Film grain
+  if (window._grainDraw) window._grainDraw();
+
+  // Hero particles
+  if (window._heroParticlesDraw) window._heroParticlesDraw(timestamp);
+
+  // Visualizer
+  if (window._visualizerDraw) window._visualizerDraw();
+
+  // Player progress
+  if (window._updatePlayerProgress) window._updatePlayerProgress();
+
+  // Parallax
+  if (window._heroParallax) window._heroParallax();
+
+  requestAnimationFrame(masterLoop);
+}
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+function init() {
+  checkMobile();
+  initCursor();
+
+  // Hide cursor on mobile
+  if (STATE.isMobile) {
+    document.body.style.cursor = 'auto';
+  } else {
+    document.body.style.cursor = 'none';
+  }
+
+  // Start intro after preloader minimum time
+  setTimeout(startIntro, 1800);
+
+  // Start master loop
+  requestAnimationFrame(masterLoop);
+
+  // Smooth scroll for explore button
+  document.querySelector('[data-action="explore"]')?.addEventListener('click', () => {
+    const featured = document.querySelector('.featured-grid');
+    if (featured) {
+      featured.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+}
+
+// Run on DOM ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+// ============================================================
+// SERVICE WORKER REGISTRATION FOR PWA-ISH BEHAVIOR
+// (Not required but good to have for future)
+// ============================================================
+
+console.log('%c YOUSUF UNBOUND %c THE EMPIRE HAS NO LIMITS ',
+  'background:#c9a84c;color:#000;font-size:20px;font-family:sans-serif;padding:10px',
+  'background:#000;color:#c9a84c;font-size:12px;padding:10px');
+console.log('%c All systems initialized. Welcome to the empire. ',
+  'color:#888;font-style:italic');
+</script>
+
+</body>
+</html>
